@@ -8,6 +8,10 @@ from flask import json
 def main():
     return render_template("main.html")
 
+@webapp.route('/main_1')
+def main_1():
+    return render_template("main_1.html")
+
 @webapp.route('/get',methods=['POST'])
 def get():
     key = request.form.get('key')

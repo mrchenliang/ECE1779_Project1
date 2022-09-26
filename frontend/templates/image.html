@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+    <title>Image by key</title>
+</head> 
+<html>
+    <body>
+        <form action="{{ url_for('get')}}" method="post">
+            <label>key:</label>
+            <input type="text" name="key" />
+            <input type="submit" value="get" />
+        </form>
+        {% if content and extension %}
+        <div>
+          <img
+            id="img"
+            src="data:image/{{extension}};base64,{{ content }}"
+          />
+        </div>
+        {% endif %}
+    <body>    
+</html>

@@ -4,22 +4,13 @@
 </head> 
 <html>
     <body>
-        <div>image</div>
-
-        <form action="{{ url_for('get')}}" method="post">
-            <label>key:</label>
-            <input type="text" name="key" />
-            <input type="submit" value="get" />
-        </form>
-
         <form action="{{ url_for('put')}}" method="post">
             <label>key:</label>
             <input type="text" name="key" />
             <label>value:</label>
             <input type="text" name="value" />
-            <input type="submit" value="put" />
+            <input type="file" name="file" id="file" accept="image/*"/>
+            <input type="submit" value="upload" />
         </form>
-
-
     <body>    
 </html>

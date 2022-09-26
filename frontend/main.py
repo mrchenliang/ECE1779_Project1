@@ -1,16 +1,23 @@
 
 from flask import render_template, url_for, request
-from app import webapp, memcache
+from frontend import webapp, memcache
 from flask import json
 
 
 @webapp.route('/')
+# returns the main page
 def main():
     return render_template("main.html")
 
-@webapp.route('/main_1')
-def main_1():
-    return render_template("main_1.html")
+@webapp.route('/image')
+# returns the view image page
+def image():
+    return render_template("image.html")
+
+@webapp.route('/upload')
+# returns the upload page
+def upload():
+    return render_template("upload.html")
 
 @webapp.route('/get',methods=['POST'])
 def get():
@@ -46,3 +53,11 @@ def put():
 
     return response
 
+@webapp.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
+
+
+@webapp.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500

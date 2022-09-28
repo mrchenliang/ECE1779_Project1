@@ -1,5 +1,5 @@
 
-from flask import render_template, url_for, request, json, jsonify
+from flask import Flask, render_template, url_for, request, json, jsonify
 from frontend import webapp, memcache
 
 @webapp.route('/')
@@ -27,7 +27,7 @@ def image():
 def upload():
     return render_template("upload.html")
 
-@webapp.route('/get', methods=['POST', 'GET'])
+@webapp.route('/api/get', methods=['POST', 'GET'])
 def get():
     key = request.form.get('key')
     if key in memcache:
@@ -48,7 +48,7 @@ def get():
 
     return response
 
-@webapp.route('/put', methods=['POST'])
+@webapp.route('/api/put', methods=['POST'])
 def put():
     key = request.form.get('key')
     value = request.form.get('value')

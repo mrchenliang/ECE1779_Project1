@@ -11,10 +11,11 @@
         </form>
         {% if content and extension %}
         <div>
-          <img
+          {{ content }}
+          <!-- <img
             id="img"
             src="data:image/{{extension}};base64,{{ content }}"
-          />
+          /> -->
         </div>
         {% endif %}
     <body>    

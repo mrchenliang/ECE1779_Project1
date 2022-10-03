@@ -4,17 +4,18 @@
 </head> 
 <html>
     <body>
-        <form action="{{ url_for('get')}}" method="post">
+        <form action="{{ url_for('api/get')}}" method="post">
             <label>key:</label>
             <input type="text" name="key" />
             <input type="submit" value="get" />
         </form>
         {% if content and extension %}
         <div>
-          <img
+          {{ content }}
+          <!-- <img
             id="img"
             src="data:image/{{extension}};base64,{{ content }}"
-          />
+          /> -->
         </div>
         {% endif %}
     <body>    

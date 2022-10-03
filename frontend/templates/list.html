@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<head>
+  <title>Very simple memcache</title>
+</head> 
+<html>
+  <body>
+    <table>
+      <tr>
+        <th>Key </th>
+        <th>Path </th>
+      <tr>
+      {% for item in list %}
+        <tr>
+          <td>{{ item.key }}</td>
+          <td>{{ item.path }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>
+      

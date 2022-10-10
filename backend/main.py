@@ -1,8 +1,8 @@
-
 from flask import Flask, render_template, url_for, request, json, jsonify
-from frontend import webapp, memcache
+from backend import webapp, memcache
 
 @webapp.route('/')
+@webapp.route('/home')
 # returns the main page
 def main():
     return render_template("main.html")
@@ -17,7 +17,7 @@ def list():
     view = render_template("list.html", list =keylist)
     return view
 
-@webapp.route('/image')
+@webapp.route('/image' methods = ['GET','POST'])
 # returns the view image page
 def image():
     return render_template("image.html")

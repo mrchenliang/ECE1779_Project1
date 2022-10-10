@@ -1,6 +1,13 @@
+from backend.cache_config import set_cache
 from flask import Flask, render_template, url_for, request, json, jsonify
-from backend.database import get_db
+from backend.database_config import get_db
+from backend.constants import max_capacity, replacement_policy
 from backend import webapp, memcache
+
+
+@webapp.before_first_request
+def set_cache_db_settings():
+    set_cache(max_capacity, replacement_policy)
 
 @webapp.route('/')
 @webapp.route('/home')
@@ -8,14 +15,19 @@ from backend import webapp, memcache
 def main():
     return render_template("main.html")
 
-@webapp.route('/list', methods=['GET'])
-# returns the list of keys and location in the database
-def list():
+@webapp.route('/keys_list', methods=['GET'])
+# returns the webpage list of keys
+def keys_list():
     cnx = get_db()
     cursor = cnx.cursor(buffered=True)
     query = "SELECT images.key FROM images"
     cursor.execute(query)
-    return render_template("list.html", list=cursor)
+    keys = []
+    for key in cursor:
+        keys.append(key[0])
+    cnx.close()
+
+    return render_template("keys_list.html", keys=keys, length=len(keys_list) )
 
 @webapp.route('/image', methods = ['GET','POST'])
 # returns the view image page
@@ -61,6 +73,34 @@ def upload():
 #     )
 
 #     return response
+
+@webapp.route('/api/list_keys', methods=['POST'])
+def list_keys():
+    try:
+        cnx = get_db()
+        cursor = cnx.cursor()
+        query = "SELECT images.key FROM images"
+        cursor.execute(query)
+        keys = []
+        for key in cursor:
+            keys.append(key[0])
+        cnx.close()
+
+        data = {
+            'success': 'true',
+            'keys': keys
+        }
+        return jsonify(data)
+
+    except Exception as e:
+        error = {
+            'success': 'false',
+            'error': {
+                'code': '500',
+                'message': 'Unable to fetch a list of keys, something went wrong'
+                }
+            }
+        return(jsonify(error))
 
 @webapp.errorhandler(404)
 def page_not_found(e):

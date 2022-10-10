@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, json, jsonify
-import mysql.connector
+from backend.database import get_db
 from backend import webapp, memcache
 
 @webapp.route('/')
@@ -8,20 +8,14 @@ from backend import webapp, memcache
 def main():
     return render_template("main.html")
 
-@webapp.route('/list')
+@webapp.route('/list', methods=['GET'])
 # returns the list of keys and location in the database
 def list():
-    cnx = mysql.connector.connect(
-        user='admin',
-        password='ece1779',
-        host='127.0.0.1',
-        database='memcache')
-    cursor = cnx.cursor()
-    keylist = [
-        {'key': 1, 'location': '1234'},
-        {'key': 2, 'location': '4321'},
-    ]
-    return render_template("list.html", list =keylist)
+    cnx = get_db()
+    cursor = cnx.cursor(buffered=True)
+    query = "SELECT images.key FROM images"
+    cursor.execute(query)
+    return render_template("list.html", list=cursor)
 
 @webapp.route('/image', methods = ['GET','POST'])
 # returns the view image page
@@ -33,40 +27,40 @@ def image():
 def upload():
     return render_template("upload.html")
 
-@webapp.route('/api/get', methods=['POST', 'GET'])
-def get():
-    key = request.form.get('key')
-    if key in memcache:
-        value = memcache[key]
-        response = webapp.response_class(
-            response=json.dumps(value),
-            status=200,
-            mimetype='application/json'
-        )
-    else:
-        response = webapp.response_class(
-            response=json.dumps("Unknown key"),
-            status=400,
-            mimetype='application/json'
-        )
-    if key == '1':
-        return render_template("image.html", content='1234', extension='4321')
+# @webapp.route('/api/get', methods=['POST', 'GET'])
+# def get():
+#     key = request.form.get('key')
+#     if key in memcache:
+#         value = memcache[key]
+#         response = webapp.response_class(
+#             response=json.dumps(value),
+#             status=200,
+#             mimetype='application/json'
+#         )
+#     else:
+#         response = webapp.response_class(
+#             response=json.dumps("Unknown key"),
+#             status=400,
+#             mimetype='application/json'
+#         )
+#     if key == '1':
+#         return render_template("image.html", content='1234', extension='4321')
 
-    return response
+#     return response
 
-@webapp.route('/api/put', methods=['POST'])
-def put():
-    key = request.form.get('key')
-    value = request.form.get('value')
-    memcache[key] = value
+# @webapp.route('/api/put', methods=['POST'])
+# def put():
+#     key = request.form.get('key')
+#     value = request.form.get('value')
+#     memcache[key] = value
 
-    response = webapp.response_class(
-        response=json.dumps("OK"),
-        status=200,
-        mimetype='application/json'
-    )
+#     response = webapp.response_class(
+#         response=json.dumps("OK"),
+#         status=200,
+#         mimetype='application/json'
+#     )
 
-    return response
+#     return response
 
 @webapp.errorhandler(404)
 def page_not_found(e):

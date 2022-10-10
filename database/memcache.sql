@@ -36,7 +36,8 @@ CREATE TABLE IF NOT EXISTS `memcache`.`cache_stats` (
   `cache_size` INT NOT NULL,
   `key_count` INT NOT NULL,
   `request_count` INT NOT NULL,
-  `miss_count` INT NOT NULL,
+  `hit_rate` INT NOT NULL,
+  `miss_rate` INT NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;

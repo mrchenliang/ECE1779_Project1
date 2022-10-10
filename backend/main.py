@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, request, json, jsonify
+import mysql.connector
 from backend import webapp, memcache
 
 @webapp.route('/')
@@ -8,16 +9,21 @@ def main():
     return render_template("main.html")
 
 @webapp.route('/list')
-# returns the list of keys and paths in the database
+# returns the list of keys and location in the database
 def list():
+    cnx = mysql.connector.connect(
+        user='admin',
+        password='ece1779',
+        host='127.0.0.1',
+        database='memcache')
+    cursor = cnx.cursor()
     keylist = [
-        {'key': 1, 'path': '1234'},
-        {'key': 2, 'path': '4321'},
+        {'key': 1, 'location': '1234'},
+        {'key': 2, 'location': '4321'},
     ]
-    view = render_template("list.html", list =keylist)
-    return view
+    return render_template("list.html", list =keylist)
 
-@webapp.route('/image' methods = ['GET','POST'])
+@webapp.route('/image', methods = ['GET','POST'])
 # returns the view image page
 def image():
     return render_template("image.html")

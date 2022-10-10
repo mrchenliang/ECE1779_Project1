@@ -14,9 +14,9 @@ USE `memcache` ;
 DROP TABLE IF EXISTS `memcache`.`images` ;
 
 CREATE TABLE IF NOT EXISTS `memcache`.`images` (
-  `id` INT NOT NULL AUTO_INCREMENT,
+  `key` VARCHAR(255) NOT NULL,
   `location` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`key`))
 ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `memcache`.`cache_properties` ;
@@ -45,6 +45,13 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+START TRANSACTION;
+USE `memcache`;
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('hot', 'hot.jpeg');
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('cold', 'cold.jpeg');
+
+COMMIT;
 
 DROP USER IF EXISTS 'admin'@'localhost';
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'ece1779';

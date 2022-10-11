@@ -7,8 +7,14 @@ from backend import webapp, memcache
 
 
 @webapp.before_first_request
-def set_cache_db_settings():
+def set_cache_config_settings():
     set_cache(max_capacity, replacement_policy)
+
+@webapp.teardown_appcontext
+def teardown_db(exception):
+    db = getattr(g, '_database', None)
+    if db is not None:
+        db.close()
 
 @webapp.route('/')
 @webapp.route('/home')

@@ -16,10 +16,10 @@ def process_image(request, key):
       if extension.lower() in ALLOWED_EXTENSIONS:
           filename = key + extension
           file.save(os.path.join(IMAGE_FOLDER, filename))
-          return write_img_db(key, filename)
+          return add_image_to_db(key, filename)
       return 'INVALID'
 
-def write_img_db(key, location):
+def add_image_to_db(key, location):
     if key == '' or location == '':
         return 'FAILURE'
     try:
@@ -39,3 +39,16 @@ def write_img_db(key, location):
         return 'OK'
     except:
         return 'FAILURE'
+
+def add_image(request, key):
+    try:
+        file = request.files['file']
+        _, extension = os.path.splitext(file.filename)
+
+        if extension.lower() in ALLOWED_EXTENSIONS:
+            filename = key + extension
+            file.save(os.path.join(IMAGE_FOLDER, filename))
+            return add_image_to_db(key, filename)
+        return 'INVALID'
+    except:
+        return "INVALID"

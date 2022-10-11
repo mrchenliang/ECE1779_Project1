@@ -2,7 +2,7 @@ from flask import Flask, render_template, url_for, request, send_file, json, jso
 from backend.cache_config import set_cache
 from backend.database_config import get_db
 from backend.constants import max_capacity, replacement_policy
-from backend.image_helper import convert_image_base64, process_image
+from backend.image_helper import convert_image_base64, process_image, add_image
 from backend import webapp, memcache
 
 
@@ -82,14 +82,14 @@ def list_keys():
         return jsonify(response)
 
     except Exception as e:
-        response_error = {
+        error_response = {
             'success': 'false',
             'error': {
                 'code': '500 Internal Server Error',
                 'message': 'Unable to fetch a list of keys, something went wrong.' + e
                 }
             }
-        return(jsonify(response_error))
+        return(jsonify(error_response))
 
 @webapp.route('/api/key/<string:key_value>', methods=['POST'])
 def key(key_value):
@@ -117,14 +117,43 @@ def key(key_value):
                 }
             return jsonify(response)
     except Exception as e:
-        error = {
+        error_response = {
             'success': 'false',
             'error': {
-                'code': '500',
+                'code': '500 Internal Server Error', 
                 'message': 'Unable to fetch the associated key, something went wrong.' + e
                 }
             }
-        return(jsonify(error))
+        return(jsonify(error_response))
+
+@webapp.route('/api/upload', methods = ['POST'])
+def upload():
+    try:
+        key = request.form.get('key')
+        status = add_image(request, key)
+        if status == 'INVALID' or status == 'FAILURE':
+            error_response = {
+                'success': 'false', 
+                'error' : {
+                    'code': '500 Internal Server Error', 
+                    'message': 'Unable to upload image, something went wrong.'
+                }
+            }
+            return jsonify(error_response)
+        response = {
+            'success': 'true'
+        }
+        return jsonify(response)
+
+    except Exception as e:
+        error_response = {
+            'success': 'false',
+            'error': {
+                'code': '500 Internal Server Error', 
+                'message': 'Unable to upload image something went wrong.' + e
+                }
+            }
+        return(jsonify(error_response))
 
 @webapp.errorhandler(404)
 def page_not_found(e):

@@ -60,7 +60,7 @@ def upload_image():
     if request.method == 'POST':
         key = request.form.get('key')
         status = process_image(request, key)
-        return render_template('upload_image.html', save_status=status)
+        return render_template('upload_image.html', status=status)
     return render_template('upload_image.html')
 
 @webapp.route('/api/list_keys', methods=['POST'])

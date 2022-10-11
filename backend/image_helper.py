@@ -16,9 +16,7 @@ def process_image(request, key):
       if extension.lower() in ALLOWED_EXTENSIONS:
           filename = key + extension
           file.save(os.path.join(IMAGE_FOLDER, filename))
-          result = write_img_db(key, filename)
-          print(result)
-          return result
+          return write_img_db(key, filename)
       return 'INVALID'
 
 def write_img_db(key, location):

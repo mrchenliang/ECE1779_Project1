@@ -11,28 +11,31 @@
             enctype=multipart/form-data
         >
 
-        <label for="key">Insert key:</label><br>
+        <label for="key">Insert key:</label>
+        <br>
         <input type="text" id="key" name="key">
 
         <br><br>
 
-        <label for="img_url">Upload Image:</label><br>
+        <label for="img_url">Upload Image:</label>
+        <br>
         <input type="file" name="file" id="file" accept="image/*"/>
 
+        <br><br>
 
         <input type="submit" id="submit">
 
-        <!-- <div>
-            {% if save_status is defined %}
-                {% if save_status == "OK" %}
-                    <h4 style="text-align: center; color: green">Image Successfully Added</h4>
-                {% elif save_status == "FAILURE" %}
-                    <h4 style="text-align: center; color: rgb(172, 16, 16)">Database Failure - Image Not Added</h4>
-                {% else %}
-                    <h4 style="text-align: center; color: rgb(172, 16, 16)">UnImage - Image Not Added</h4>
+        <div style="text-align: center;">
+            {% if status is defined %}
+                {% if status == "OK" %}
+                    <h4 style="color: green">Image Successfully Added</h4>
+                {% elif status == "FAILURE" %}
+                    <h4 style="color: rgb(172, 16, 16)">Database Failure - Image Not Added</h4>
+                {% elif status == "INVALID" %}
+                    <h4 style="color: rgb(172, 16, 16)">Image Type Not Supported</h4>
                 {% endif %}
             {% endif %}
-        </div> -->
+        </div>
     </form>
     <body>    
 </html>

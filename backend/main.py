@@ -1,7 +1,9 @@
-from backend.cache_config import set_cache
 from flask import Flask, render_template, url_for, request, json, jsonify
+import requests
+from backend.cache_config import set_cache
 from backend.database_config import get_db
 from backend.constants import max_capacity, replacement_policy
+from backend.image_helper import convert_image_base64
 from backend import webapp, memcache
 
 
@@ -27,12 +29,25 @@ def keys_list():
         keys.append(key[0])
     cnx.close()
 
-    return render_template("keys_list.html", keys=keys, length=len(keys_list) )
+    return render_template("keys_list.html", keys=keys, length=len(keys) )
 
 @webapp.route('/image', methods = ['GET','POST'])
 # returns the view image page
 def image():
-    return render_template("image.html")
+    if request.method == 'POST':
+        key_value = request.form.get('key_value')
+        cnx = get_db()
+        cursor = cnx.cursor(buffered=True)
+        query = 'SELECT images.location FROM images where images.key = %s'
+        cursor.execute(query, (key_value,))
+        if(cursor._rowcount):
+            location=str(cursor.fetchone()[0]) 
+            cnx.close()
+            base64_image = convert_image_base64(location)
+            return render_template('image.html', exists=True, image=base64_image)
+        else:#the key is not found in the db
+            return render_template('image.html', exists=False, image='does not exist')
+    return render_template('image.html')
 
 @webapp.route('/upload')
 # returns the upload page
@@ -86,18 +101,53 @@ def list_keys():
             keys.append(key[0])
         cnx.close()
 
-        data = {
-            'success': 'true',
-            'keys': keys
+        response = {
+          'success': 'true',
+          'keys': keys
         }
-        return jsonify(data)
+        return jsonify(response)
 
+    except Exception as e:
+        response_error = {
+            'success': 'false',
+            'error': {
+                'code': '500 Internal Server Error',
+                'message': 'Unable to fetch a list of keys, something went wrong.' + e
+                }
+            }
+        return(jsonify(response_error))
+
+@webapp.route('/api/key/<string:key_value>', methods=['POST'])
+def key(key_value):
+    try:
+        cnx = get_db()
+        cursor = cnx.cursor(buffered=True)
+        query = 'SELECT images.location FROM images where images.key = %s'
+        cursor.execute(query, (key_value,))
+        if(cursor._rowcount):
+            location=str(cursor.fetchone()[0]) 
+            cnx.close()
+            base64_image = convert_image_base64(location)
+            response = {
+                'success': 'true' , 
+                'content': base64_image
+            }
+            return jsonify(response)
+        else:
+            response = {
+                'success': 'false', 
+                'error': {
+                    'code': "406 Not Acceptable", 
+                    'message': 'The associated key does not exist'
+                    }
+                }
+            return jsonify(response)
     except Exception as e:
         error = {
             'success': 'false',
             'error': {
                 'code': '500',
-                'message': 'Unable to fetch a list of keys, something went wrong'
+                'message': 'Unable to fetch the associated key, something went wrong.' + e
                 }
             }
         return(jsonify(error))

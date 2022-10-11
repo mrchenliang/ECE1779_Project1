@@ -4,19 +4,20 @@
 </head> 
 <html>
     <body>
-        <form action="{{ url_for('api/get')}}" method="post">
-            <label>key:</label>
-            <input type="text" name="key" />
-            <input type="submit" value="get" />
+        <form method="post">
+            <label>Key:</label>
+            <input type="text" name="key_value" />
+            <input type="submit" value="Get Key" />
         </form>
-        {% if content and extension %}
         <div>
-          {{ content }}
-          <!-- <img
-            id="img"
-            src="data:image/{{extension}};base64,{{ content }}"
-          /> -->
+          {% if image is defined %}
+            {% if exists %}
+              <h4>Image:</h4>
+              <img src= "data:image/png;base64,{{ image }}" alt={{image}}  class="image-preview"/>
+            {% else %}
+              <h4>Please enter a valid key, the image you are looking for does not exist</h4>
+            {% endif %}
+          {% endif %}
         </div>
-        {% endif %}
     <body>    
 </html>

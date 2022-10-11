@@ -63,6 +63,16 @@ def upload_image():
         return render_template('upload_image.html', status=status)
     return render_template('upload_image.html')
 
+@webapp.route('/cache_properties', methods = ['GET','POST'])
+# returns the cache properties page
+def cache_properties():
+    return render_template('cache_properties.html')
+
+@webapp.route('/cache_stats', methods = ['GET','POST'])
+# returns the cache stats page
+def cache_stats():
+    return render_template('cache_stats.html')
+
 @webapp.route('/api/list_keys', methods=['POST'])
 def list_keys():
     try:

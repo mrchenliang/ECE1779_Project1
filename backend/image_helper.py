@@ -1,7 +1,7 @@
 import base64, os
 from backend.constants import ALLOWED_EXTENSIONS
 from backend import IMAGE_FOLDER
-from backend.database_config import get_db
+from backend.database_helper import get_db
 
 def convert_image_base64(fp):
     with open(IMAGE_FOLDER + '/' + fp, 'rb') as image:

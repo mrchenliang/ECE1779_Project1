@@ -1,4 +1,4 @@
-from backend.database_config import get_db
+from backend.database_helper import get_db
 
 def get_cache():
     try:

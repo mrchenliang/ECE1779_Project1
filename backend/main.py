@@ -1,12 +1,11 @@
-import datetime
+import datetime, requests
 from flask import Flask, render_template, url_for, request, send_file, json, jsonify, g
 from backend.cache_helper import get_cache, set_cache
 from backend.database_helper import get_db
-from backend.constants import max_capacity, replacement_policy
+from backend.constants import max_capacity, replacement_policy, memcache_host
 from backend.image_helper import convert_image_base64, process_image, add_image
 from backend.graph_helper import prepare_graph, plot_graph
 from backend import webapp
-
 
 @webapp.before_first_request
 def set_cache_config_settings():
@@ -85,6 +84,7 @@ def cache_properties():
         created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if request.method == 'POST':
         if not request.form.get("clear_cache") == None:
+            requests.post(memcache_host + '/clear_cache')
             return render_template('cache_properties.html', max_capacity=max_capacity, replacement_policy=replacement_policy, created_at=created_at, status="CLEAR")
         else: 
             new_max_capacity = request.form.get('max_capacity')

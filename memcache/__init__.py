@@ -4,7 +4,7 @@ webapp = Flask(__name__)
 
 from flask_apscheduler import APScheduler
 
-global memcache  # memcache
+global memcache_object  # memcache
 global memcache_stat  # statistic of the memcache
 global memcache_config  # configuration of the memcache
 

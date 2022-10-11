@@ -1,7 +1,5 @@
 from flask import Flask
 import os
-
-from flask import Flask
 from backend import main
 from flask_apscheduler import APScheduler
 

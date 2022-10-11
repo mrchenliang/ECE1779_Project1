@@ -1,6 +1,5 @@
 from flask import Flask
 import os
-from backend import main
 from flask_apscheduler import APScheduler
 
 global memcache  # memcache
@@ -42,3 +41,5 @@ memcache_config['replace_policy'] = 'Random'
 scheduler = APScheduler()
 scheduler.init_app(webapp)
 scheduler.start()
+
+from backend import main

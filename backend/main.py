@@ -4,6 +4,7 @@ from backend.cache_helper import get_cache, set_cache
 from backend.database_helper import get_db
 from backend.constants import max_capacity, replacement_policy
 from backend.image_helper import convert_image_base64, process_image, add_image
+from backend.graph_helper import prepare_graph, plot_graph
 from backend import webapp, memcache
 
 
@@ -92,7 +93,6 @@ def cache_properties():
                 created_at = set_cache(new_max_capacity, new_replacement_policy)
                 if not created_at == None:
                     new_created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    print(new_created_at)
                 return render_template('cache_properties.html', max_capacity=new_max_capacity, replacement_policy=new_replacement_policy, created_at=new_created_at, status="OK")
             return render_template('cache_properties.html', max_capacity=max_capacity, replacement_policy=replacement_policy, created_at=created_at, status="INVALID")
     return render_template('cache_properties.html', max_capacity=max_capacity, replacement_policy=replacement_policy, created_at=created_at)
@@ -100,7 +100,23 @@ def cache_properties():
 @webapp.route('/cache_stats', methods = ['GET','POST'])
 # returns the cache stats page
 def cache_stats():
-    return render_template('cache_stats.html')
+    cnx = get_db()
+    cursor = cnx.cursor(dictionary=True)
+    stop_time = datetime.datetime.now()
+    start_time = stop_time - datetime.timedelta(minutes=10)
+    query = '''SELECT * FROM cache_stats WHERE cache_stats.created_at > %s and cache_stats.created_at < %s'''
+    cursor.execute(query, (start_time, stop_time,))
+    data = cursor.fetchall()
+    cnx.close()
+
+    (x_data, y_data) = prepare_graph(data)
+    
+    graph_image = {}
+    for key, value in y_data.items():
+        graph_image[key] = plot_graph(x_data['x-axis'], value, key)
+    return render_template('cache_stats.html', cache_count_graph = graph_image['cache_count'], 
+                            request_count_graph = graph_image['request_count'], cache_size_graph = graph_image['cache_size'], 
+                             hit_graph = graph_image['hit_count'], miss_graph = graph_image['miss_count'])
 
 @webapp.route('/api/list_keys', methods=['POST'])
 def list_keys():

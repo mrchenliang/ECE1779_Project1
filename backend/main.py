@@ -1,9 +1,8 @@
-from flask import Flask, render_template, url_for, request, json, jsonify
-import requests
+from flask import Flask, render_template, url_for, request, send_file, json, jsonify
 from backend.cache_config import set_cache
 from backend.database_config import get_db
 from backend.constants import max_capacity, replacement_policy
-from backend.image_helper import convert_image_base64
+from backend.image_helper import convert_image_base64, process_image
 from backend import webapp, memcache
 
 
@@ -15,21 +14,27 @@ def set_cache_db_settings():
 @webapp.route('/home')
 # returns the main page
 def main():
-    return render_template("main.html")
+    return render_template('main.html')
 
 @webapp.route('/keys_list', methods=['GET'])
-# returns the webpage list of keys
+# returns the webpage list of keys page
 def keys_list():
     cnx = get_db()
     cursor = cnx.cursor(buffered=True)
-    query = "SELECT images.key FROM images"
+    query = 'SELECT images.key FROM images'
     cursor.execute(query)
     keys = []
     for key in cursor:
         keys.append(key[0])
     cnx.close()
 
-    return render_template("keys_list.html", keys=keys, length=len(keys) )
+    return render_template('keys_list.html', keys=keys, length=len(keys) )
+
+@webapp.route('/get_image/<string:image>')
+# returns the actual image
+def get_image(image):
+    filepath = 'static/images/' + image
+    return send_file(filepath)
 
 @webapp.route('/image', methods = ['GET','POST'])
 # returns the view image page
@@ -49,52 +54,21 @@ def image():
             return render_template('image.html', exists=False, image='does not exist')
     return render_template('image.html')
 
-@webapp.route('/upload')
+@webapp.route('/upload_image', methods = ['GET','POST'])
 # returns the upload page
-def upload():
-    return render_template("upload.html")
-
-# @webapp.route('/api/get', methods=['POST', 'GET'])
-# def get():
-#     key = request.form.get('key')
-#     if key in memcache:
-#         value = memcache[key]
-#         response = webapp.response_class(
-#             response=json.dumps(value),
-#             status=200,
-#             mimetype='application/json'
-#         )
-#     else:
-#         response = webapp.response_class(
-#             response=json.dumps("Unknown key"),
-#             status=400,
-#             mimetype='application/json'
-#         )
-#     if key == '1':
-#         return render_template("image.html", content='1234', extension='4321')
-
-#     return response
-
-# @webapp.route('/api/put', methods=['POST'])
-# def put():
-#     key = request.form.get('key')
-#     value = request.form.get('value')
-#     memcache[key] = value
-
-#     response = webapp.response_class(
-#         response=json.dumps("OK"),
-#         status=200,
-#         mimetype='application/json'
-#     )
-
-#     return response
+def upload_image():
+    if request.method == 'POST':
+        key = request.form.get('key')
+        status = process_image(request, key)
+        return render_template('upload_image.html', save_status=status)
+    return render_template('upload_image.html')
 
 @webapp.route('/api/list_keys', methods=['POST'])
 def list_keys():
     try:
         cnx = get_db()
         cursor = cnx.cursor()
-        query = "SELECT images.key FROM images"
+        query = 'SELECT images.key FROM images'
         cursor.execute(query)
         keys = []
         for key in cursor:
@@ -137,7 +111,7 @@ def key(key_value):
             response = {
                 'success': 'false', 
                 'error': {
-                    'code': "406 Not Acceptable", 
+                    'code': '406 Not Acceptable', 
                     'message': 'The associated key does not exist'
                     }
                 }
@@ -155,7 +129,6 @@ def key(key_value):
 @webapp.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
-
 
 @webapp.errorhandler(500)
 def internal_server_error(e):

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+    <title>Very simple memcache</title>
+</head> 
+<html>
+    <body>
+        <form
+            class="form-outline"
+            style="height: 260px"
+            method="post"
+            enctype=multipart/form-data
+        >
+
+        <label for="key">Insert key:</label><br>
+        <input type="text" id="key" name="key">
+
+        <br><br>
+
+        <label for="img_url">Upload Image:</label><br>
+        <input type="file" name="file" id="file" accept="image/*"/>
+
+
+        <input type="submit" id="submit">
+
+        <!-- <div>
+            {% if save_status is defined %}
+                {% if save_status == "OK" %}
+                    <h4 style="text-align: center; color: green">Image Successfully Added</h4>
+                {% elif save_status == "FAILURE" %}
+                    <h4 style="text-align: center; color: rgb(172, 16, 16)">Database Failure - Image Not Added</h4>
+                {% else %}
+                    <h4 style="text-align: center; color: rgb(172, 16, 16)">UnImage - Image Not Added</h4>
+                {% endif %}
+            {% endif %}
+        </div> -->
+    </form>
+    <body>    
+</html>

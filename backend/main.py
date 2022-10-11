@@ -5,7 +5,7 @@ from backend.database_helper import get_db
 from backend.constants import max_capacity, replacement_policy
 from backend.image_helper import convert_image_base64, process_image, add_image
 from backend.graph_helper import prepare_graph, plot_graph
-from backend import webapp, memcache
+from backend import webapp
 
 
 @webapp.before_first_request
@@ -21,7 +21,7 @@ def teardown_db(exception):
 @webapp.route('/')
 @webapp.route('/home')
 # returns the main page
-def main():
+def home():
     return render_template('main.html')
 
 @webapp.route('/keys_list', methods=['GET'])

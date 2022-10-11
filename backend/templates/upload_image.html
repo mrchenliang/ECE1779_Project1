@@ -10,20 +10,23 @@
             method="post"
             enctype=multipart/form-data
         >
-
-        <label for="key">Insert key:</label>
+        <div>
+            <label for="key">Insert key:</label>
+            <br>
+            <input type="text" id="key" name="key">
+        </div>
         <br>
-        <input type="text" id="key" name="key">
-
-        <br><br>
-
-        <label for="img_url">Upload Image:</label>
         <br>
-        <input type="file" name="file" id="file" accept="image/*"/>
-
-        <br><br>
-
-        <input type="submit" id="submit">
+        <div>
+            <label for="img_url">Upload Image:</label>
+            <br>
+            <input type="file" name="file" id="file" accept="image/*"/>
+        </div>
+        <br>
+        <br>
+        <div>
+            <input type="submit" id="submit">
+         </div>
 
         <div style="text-align: center;">
             {% if status is defined %}

@@ -8,7 +8,7 @@ global memcache_object  # memcache
 global memcache_stat  # statistic of the memcache
 global memcache_config  # configuration of the memcache
 
-memcache = {}  # memcache format:
+memcache_object = {}  # memcache format:
 # {'key': {'file': encoded base64 file, 'size': file size in Byte, 'timestamp': timestamp}}
 memcache_stat = {}  # memcache_stat format:
 # {'key_count': total count of key in cache,

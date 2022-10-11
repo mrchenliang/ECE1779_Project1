@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `memcache`.`cache_properties` ;
 CREATE TABLE IF NOT EXISTS `memcache`.`cache_properties` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `max_capacity` INT NOT NULL,
-  `replacement_method` VARCHAR(255) NOT NULL,
+  `replacement_policy` VARCHAR(255) NOT NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;

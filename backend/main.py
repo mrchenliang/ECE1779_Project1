@@ -2,14 +2,14 @@ import datetime
 from flask import Flask, render_template, url_for, request, send_file, json, jsonify, g
 from backend.cache_helper import get_cache, set_cache
 from backend.database_helper import get_db
-from backend.constants import max_capacity, replacement_method
+from backend.constants import max_capacity, replacement_policy
 from backend.image_helper import convert_image_base64, process_image, add_image
 from backend import webapp, memcache
 
 
 @webapp.before_first_request
 def set_cache_config_settings():
-    set_cache(max_capacity, replacement_method)
+    set_cache(max_capacity, replacement_policy)
 
 @webapp.teardown_appcontext
 def teardown_db(exception):
@@ -76,16 +76,26 @@ def cache_properties():
     cache_properties = get_cache()
     if not cache_properties == None:
         max_capacity = cache_properties[1]
-        replacement_method = cache_properties[2]
-        update_time = cache_properties[3]
+        replacement_policy = cache_properties[2]
+        created_at = cache_properties[3]
     else:
-        max_capacity = max_capacity
-        replacement_method = replacement_method
-        update_time = datetime.time()
-    print(cache_properties)
-    # if request.method == 'POST':
-
-    return render_template('cache_properties.html', max_capacity=max_capacity, replacement_method=replacement_method, update_time=update_time)
+        max_capacity = 2
+        replacement_policy = 'Least Recently Used'
+        created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    if request.method == 'POST':
+        if not request.form.get("clear_cache") == None:
+            return render_template('cache_properties.html', max_capacity=max_capacity, replacement_policy=replacement_policy, created_at=created_at, status="CLEAR")
+        else: 
+            new_max_capacity = request.form.get('max_capacity')
+            if new_max_capacity.isdigit() and int(new_max_capacity) <= 2000:
+                new_replacement_policy = request.form.get('replacement_policy')
+                created_at = set_cache(new_max_capacity, new_replacement_policy)
+                if not created_at == None:
+                    new_created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    print(new_created_at)
+                return render_template('cache_properties.html', max_capacity=new_max_capacity, replacement_policy=new_replacement_policy, created_at=new_created_at, status="OK")
+            return render_template('cache_properties.html', max_capacity=max_capacity, replacement_policy=replacement_policy, created_at=created_at, status="INVALID")
+    return render_template('cache_properties.html', max_capacity=max_capacity, replacement_policy=replacement_policy, created_at=created_at)
 
 @webapp.route('/cache_stats', methods = ['GET','POST'])
 # returns the cache stats page

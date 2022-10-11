@@ -13,14 +13,13 @@ def get_cache():
     except:
         return None
 
-def set_cache(max_capacity, replacement_method):
+def set_cache(max_capacity, replacement_policy):
     try:
         cnx = get_db()
         cursor = cnx.cursor(buffered = True)
-        query_add = ''' INSERT INTO cache_properties (max_capacity, replacement_method) VALUES (%s,%s)'''
-        cursor.execute(query_add,(max_capacity, replacement_method))
+        query_add = ''' INSERT INTO cache_properties (max_capacity, replacement_policy) VALUES (%s,%s)'''
+        cursor.execute(query_add,(max_capacity, replacement_policy))
         cnx.commit()
-        
         return True
     except:
         return None

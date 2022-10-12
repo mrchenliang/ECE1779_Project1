@@ -7,7 +7,7 @@
 import random
 from datetime import datetime
 from sys import getsizeof
-from backend import webapp, memcache, memcache_stat, memcache_config
+from memcache import webapp, memcache, memcache_stat, memcache_config
 
 
 def random_replacement():

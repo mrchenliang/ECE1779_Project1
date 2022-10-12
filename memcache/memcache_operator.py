@@ -137,3 +137,24 @@ def get_from_memcache(key):
         # Update the memcache status
         update_memcache_stat_of_statistics(existed=False)
         return None
+
+
+def clear_all_from_memcache():
+    """
+    Drop all the keys and values in the memcache
+    :return: None
+    """
+    # Drop all keys and values
+    memcache.clear()
+    # Update the memcache_stat
+    memcache_stat['key_count'] = 0
+    memcache_stat['size_count'] = 0
+    print("---------Memcache is cleared---------")
+
+
+def invalidate_specific_key(key):
+    """
+    Drop a specific key
+    :param key: str
+    :return: None
+    """

@@ -11,7 +11,7 @@ Assignment Group 2
 ## Dependencies
 The assignment project requires the following libraries `Flask, gunicorn, mysql.connector, matplotlib.figure, flask_apscheduler`
 ### To Install
-`pip3 install {dependency}`
+`pip3 install -r requirements.txt`
 ## Setup and Run
 ### To Start
 `sh start.sh`

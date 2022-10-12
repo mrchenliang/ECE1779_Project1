@@ -13,7 +13,7 @@ from memcache import webapp, memcache, memcache_stat, memcache_config
 def random_replacement():
     """
     Randomly selects a key and discards it to make space when necessary
-    :return: None
+    :return: bool
     """
     # Check if the memcache is empty
     if bool(memcache):
@@ -31,7 +31,7 @@ def random_replacement():
 def lru_replacement():
     """
     Randomly selects a key and discards it to make space when necessary
-    :return: None
+    :return: bool
     """
     # Check if the memcache is empty
     if bool(memcache):
@@ -53,7 +53,7 @@ def lru_replacement():
 def replacement():
     """
     Using this to determine which replacement policy we will take and execute it
-    :return: None
+    :return: bool
     """
     if memcache_config['replace_policy'] == 'Random':
         return random_replacement()
@@ -81,7 +81,7 @@ def put_into_memcache(key, file):
     Set the key and value to memcache, and the value need to be encoded into Base64
     :param key: str
     :param file: str
-    :return: None
+    :return: bool
     """
     # Check memcache remains some capacity for the new value
     # Converts the image size to MB
@@ -156,5 +156,25 @@ def invalidate_specific_key(key):
     """
     Drop a specific key
     :param key: str
-    :return: None
+    :return: bool
     """
+    if (key is not None) and (key in memcache.keys()):
+        # First update the memcache status
+        memcache_stat['key_count'] -= 1
+        memcache_stat['size_count'] -= memcache[key]['size']
+        # Then pop the corresponding key and value
+        memcache.pop(key)
+        print("Invalidation done")
+        return True
+    else:
+        print("Invalidation ERROR")
+        return False
+
+
+def refresh_config_of_memcache():
+    """
+    Read memcache config details from the database and reconfigure the values
+    including capacity in MB and replacement policy
+    :return: bool
+    """
+

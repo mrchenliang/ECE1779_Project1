@@ -4,7 +4,6 @@
    @ Brief: Operator of the memcache backend
 """
 
-
 import random
 from sys import getsizeof
 from backend import webapp, memcache, memcache_stat, memcache_config

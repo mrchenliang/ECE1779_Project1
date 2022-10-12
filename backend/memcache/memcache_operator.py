@@ -5,17 +5,22 @@
 """
 
 import random
+from datetime import datetime
 from sys import getsizeof
 from backend import webapp, memcache, memcache_stat, memcache_config
 
 
 def random_replacement():
+    """
+    Randomly selects a key and discards it to make space when necessary
+    :return: None
+    """
     # Check if the memcache is empty
     if bool(memcache):
         # pop the random key and its value, then update the memcache_stat
         random_key = random.choice(list(memcache.keys()))
         memcache_stat['key_count'] -= 1
-        memcache_stat['size'] -= memcache[random_key]['size']
+        memcache_stat['size_count'] -= memcache[random_key]['size']
         memcache.pop(random_key)
         return True
     else:
@@ -24,6 +29,10 @@ def random_replacement():
 
 
 def lru_replacement():
+    """
+    Randomly selects a key and discards it to make space when necessary
+    :return: None
+    """
     # Check if the memcache is empty
     if bool(memcache):
         # pop the least used key and value by its timestamp, then update the memcache_stat
@@ -31,7 +40,7 @@ def lru_replacement():
         for key in memcache.keys():
             if memcache[key]['timestamp'] == least_used_key_timestamp:
                 memcache_stat['key_count'] -= 1
-                memcache_stat['size'] -= memcache[key]['size']
+                memcache_stat['size_count'] -= memcache[key]['size']
                 memcache.pop(key)
             else:
                 continue
@@ -42,10 +51,29 @@ def lru_replacement():
 
 
 def replacement():
+    """
+    Using this to determine which replacement policy we will take and execute it
+    :return: None
+    """
     if memcache_config['replace_policy'] == 'Random':
         return random_replacement()
     else:
         return lru_replacement()
+
+
+def update_memcache_stat_of_statistics(existed):
+    """
+    Using this function to update the statistics of memcache after GET operation
+    :param existed: bool
+    :return: None
+    """
+    memcache_stat['request_count'] += 1
+    if existed:
+        memcache_stat['hit_count'] += 1
+        memcache_stat['hit_rate'] = memcache_stat['hit_count'] / memcache_stat['request_count']
+    else:
+        memcache_stat['miss_count'] += 1
+        memcache_stat['miss_rate'] = memcache_stat['miss_count'] / memcache_stat['request_count']
 
 
 def put_into_memcache(key, file):
@@ -67,12 +95,46 @@ def put_into_memcache(key, file):
     # Check the key is new one or existed one
     if key in memcache.keys():
         existed_file_size = memcache[key]['size']
-        memcache_stat['size'] -= existed_file_size
+        memcache_stat['size_count'] -= existed_file_size
     # If the size will over the capacity after put, do the replacement
     while image_size + memcache_stat['size_count'] > memcache_config['capacity']:
         if not bool(replacement()):
             print("The replacement process has ERROR, the memcache is EMPTY")
             return False
     # Put the value into memcache
-
+    if key in memcache.keys():
+        memcache[key]['file'] = file
+        memcache[key]['size'] = image_size
+        memcache[key]['timestamp'] = datetime.now()
+    else:
+        memcache[key] = {
+            'file': file,
+            'size': image_size,
+            'timestamp': datetime.now()
+        }
+        memcache_stat['key_count'] += 1
     # Update the memcache stat
+    memcache_stat['size_count'] += image_size
+    return True
+
+
+def get_from_memcache(key):
+    """
+    Using the specific key to get the value of it. If its value existed, return the base64 encoded
+    value. Else return the None and print hints there is no value of this key in memcache
+    :param key: str
+    :return: str
+    """
+    # Check if the key is existed in the memcache
+    if key is None:
+        return None
+    if key in memcache.keys():
+        # Update the memcache status and return the value of the key
+        memcache[key]['timestamp'] = datetime.now()
+        update_memcache_stat_of_statistics(existed=True)
+        return memcache[key]['file']
+    else:
+        # Update the memcache status
+        update_memcache_stat_of_statistics(existed=False)
+        return None
+

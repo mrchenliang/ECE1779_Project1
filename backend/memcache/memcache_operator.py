@@ -137,4 +137,3 @@ def get_from_memcache(key):
         # Update the memcache status
         update_memcache_stat_of_statistics(existed=False)
         return None
-

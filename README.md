@@ -21,7 +21,7 @@ The assignment project requires the following libraries `Flask, gunicorn, mysql.
 ## Project Architecture
 This assignment project has 2 independent flask instances
 - 1 instance is for the backend service running on port 5000
-- 1 instnace is for the memcache service running on port 5001
+- 1 instance is for the memcache service running on port 5001
 
 The backend service returns web pages and responds to api requests. The memcache service is exposed to the public but is used as an internal service that the backend service calls to configure, add, update and reset the memcache. The memcache also updates the database periodically with the memcache data.
 

@@ -14,9 +14,10 @@ def process_image(request, key):
       _, extension = os.path.splitext(file.filename)
 
       if extension.lower() in ALLOWED_EXTENSIONS:
-          filename = key + extension
-          file.save(os.path.join(IMAGE_FOLDER, filename))
-          return add_image_to_db(key, filename)
+            filename = key + extension
+            file.save(os.path.join(IMAGE_FOLDER, filename))
+            # implement memcache (post request for invalidate image)
+            return add_image_to_db(key, filename)
       return 'INVALID'
 
 def add_image_to_db(key, location):
@@ -48,6 +49,7 @@ def add_image(request, key):
         if extension.lower() in ALLOWED_EXTENSIONS:
             filename = key + extension
             file.save(os.path.join(IMAGE_FOLDER, filename))
+            # implement memcache (post request for invalidate image)
             return add_image_to_db(key, filename)
         return 'INVALID'
     except:

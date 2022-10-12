@@ -48,16 +48,18 @@ def get_image(image):
 def image():
     if request.method == 'POST':
         key_value = request.form.get('key_value')
+        # implement memcache (get request for image)
         cnx = get_db()
         cursor = cnx.cursor(buffered=True)
         query = 'SELECT images.location FROM images where images.key = %s'
         cursor.execute(query, (key_value,))
-        if(cursor._rowcount):
+        if cursor._rowcount:
             location=str(cursor.fetchone()[0]) 
             cnx.close()
             base64_image = convert_image_base64(location)
+            # implement memcache (put request for image)
             return render_template('image.html', exists=True, image=base64_image)
-        else:#the key is not found in the db
+        else:
             return render_template('image.html', exists=False, image='does not exist')
     return render_template('image.html')
 
@@ -93,7 +95,9 @@ def cache_properties():
                 created_at = set_cache(new_max_capacity, new_replacement_policy)
                 if not created_at == None:
                     new_created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                return render_template('cache_properties.html', max_capacity=new_max_capacity, replacement_policy=new_replacement_policy, created_at=new_created_at, status="OK")
+                    response = requests.post(memcache_host + '/refresh_configuration')
+                    if response.json() == 'OK':
+                        return render_template('cache_properties.html', max_capacity=new_max_capacity, replacement_policy=new_replacement_policy, created_at=new_created_at, status="OK")
             return render_template('cache_properties.html', max_capacity=max_capacity, replacement_policy=replacement_policy, created_at=created_at, status="INVALID")
     return render_template('cache_properties.html', max_capacity=max_capacity, replacement_policy=replacement_policy, created_at=created_at)
 
@@ -149,14 +153,16 @@ def list_keys():
 @webapp.route('/api/key/<string:key_value>', methods=['POST'])
 def key(key_value):
     try:
+        # implement memcache (get request for image)
         cnx = get_db()
         cursor = cnx.cursor(buffered=True)
         query = 'SELECT images.location FROM images where images.key = %s'
         cursor.execute(query, (key_value,))
-        if(cursor._rowcount):
+        if cursor._rowcount:
             location=str(cursor.fetchone()[0]) 
             cnx.close()
             base64_image = convert_image_base64(location)
+            # implement memcache (put request for image)
             response = {
                 'success': 'true' , 
                 'content': base64_image

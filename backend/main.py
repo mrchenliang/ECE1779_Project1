@@ -131,7 +131,7 @@ def cache_stats():
         graph_image[key] = plot_graph(x_data['x-axis'], value, key)
     return render_template('cache_stats.html', cache_count_graph = graph_image['cache_count'], 
                             request_count_graph = graph_image['request_count'], cache_size_graph = graph_image['cache_size'], 
-                             hit_graph = graph_image['hit_count'], miss_graph = graph_image['miss_count'])
+                             hit_graph = graph_image['hit_rate'], miss_graph = graph_image['miss_rate'])
 
 @webapp.route('/api/list_keys', methods=['POST'])
 def list_keys():

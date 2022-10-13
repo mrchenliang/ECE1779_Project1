@@ -28,7 +28,7 @@ The backend service returns web pages and responds to api requests. The memcache
 ### Web Pages (Port 5000)
 - `/` directs to home page
 - `/image` directs to get image page
-![Get Image Hit](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20image%20hit%20%26%post%clear_cache.jpeg)
+![Get Image Hit](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20image%20hit%20%26%20post%20clear_cache.jpeg)
 ![Get Image Miss](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20image%20miss.jpeg)
 
 - `/upload_image` directs to put image page
@@ -39,7 +39,7 @@ The backend service returns web pages and responds to api requests. The memcache
 
 - `/cache_properties` directs to get cache properties page
 ![Post Set Cache Properties](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/post%20cache_properties.jpeg)
-![Post Clear Cache](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20image%20hit%20%26%post%clear_cache.jpeg)
+![Post Clear Cache](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20image%20hit%20%26%20post%20clear_cache.jpeg)
 
 - `/cache_stats` directs to get cache stats page
 ![Get Cache Stats](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20keys_list%20%26%20get%20cache_stats.jpeg)

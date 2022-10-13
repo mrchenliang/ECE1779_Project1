@@ -162,7 +162,7 @@ def get_from_memcache(key):
 def clear_all_from_memcache():
     """
     Drop all the keys and values in the memcache
-    :return: None
+    :return: bool
     """
     # Drop all keys and values
     memcache.clear()
@@ -170,6 +170,7 @@ def clear_all_from_memcache():
     memcache_stat['key_count'] = 0
     memcache_stat['size_count'] = 0
     print("---------Memcache is cleared---------")
+    return True
 
 
 def invalidate_specific_key(key):

@@ -2,20 +2,42 @@ from flask import Flask, render_template, url_for, request, send_file, json, jso
 from memcache import webapp
 from memcache.response_helper import response_builder
 from backend.cache_helper import get_cache
+from memcache_operator import *
+from memcache import scheduler
 
-@webapp.route('/clear_cache', methods = ['GET', 'POST'])
+
+@webapp.route('/put_into_memcache', methods=['GET', 'POST'])
+def put_memcache(key, file):
+    flag = put_into_memcache(key, file)
+    return response_builder(flag)
+
+
+@webapp.route('/get_from_memcache', methods=['GET', 'POST'])
+def get_memcache(key):
+    file = get_from_memcache(key)
+    if file is None:
+        return "Miss"
+    else:
+        return file
+
+
+@webapp.route('/clear_cache', methods=['GET', 'POST'])
 # clears the memcache object
 def clear_cache():
-    memcache_object = {}
-    return response_builder(True)
+    flag = clear_all_from_memcache()
+    return response_builder(flag)
 
-@webapp.route('/refresh_configuration', methods = ['POST'])
+
+@webapp.route('/refresh_configuration', methods=['GET', 'POST'])
 # refresh the memcache configuration
 def refresh_configuration():
-    cache_properties = get_cache()
-    if not cache_properties == None:
-        max_capacity = cache_properties[1]
-        replacement_policy = cache_properties[2]
-        # implement setting up new memcache
-        return response_builder(True)
-    return None
+    flag = refresh_config_of_memcache()
+    scheduler.add_job(id="update_memcache_statistics", func=store_statistic_into_db,
+                      trigger="interval", seconds=5)
+    return response_builder(flag)
+
+
+@webapp.route('/invalidate_specific_key', methods=['GET', 'POST'])
+def invalidate_key(key):
+    flag = invalidate_specific_key(key)
+    return response_builder(flag)

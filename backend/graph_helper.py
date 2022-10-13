@@ -9,8 +9,12 @@ def prepare_graph(rows):
     for row in rows:
         x_data['x-axis'].append(row['created_at'])
         y_data['request_count'].append(row['request_count'])
-        y_data['miss_rate'].append(row['miss_count']/row['request_count'])
-        y_data['hit_rate'].append(row['hit_count']/row['request_count'])
+        if row['request_count'] == 0:
+            y_data['miss_rate'].append(row['miss_count'])
+            y_data['hit_rate'].append(row['hit_count'])
+        else:
+            y_data['miss_rate'].append(row['miss_count']/row['request_count'])
+            y_data['hit_rate'].append(row['hit_count']/row['request_count'])
         y_data['cache_size'].append(row['cache_size'])
         y_data['cache_count'].append(row['key_count'])
     return (x_data, y_data)

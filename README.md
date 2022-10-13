@@ -23,11 +23,14 @@
     </li>
     <li><a href="#Project-Architecture">Project Architecture</a></li>
       <ul>
-        <li><a href="#Web-Pages-(Port-5000)">Web Pages</a></li>
-        <li><a href="#Backend-API-Endpoints-(Port-5000)">Backend API Endpoints</a></li>
-        <li><a href="#Memcache-API-Endpoints-(Port-5001)">Memcache API Endpoints</a></li>
+        <li><a href="#Web-Pages-Port-5000">Web Pages</a></li>
+        <li><a href="#Backend-API-Endpoints-Port-5000">Backend API Endpoints</a></li>
+        <li><a href="#Memcache-API-Endpoints-Port-5001">Memcache API Endpoints</a></li>
       </ul>
     <li><a href="#Database">Database </a></li>
+    <li><a href="#Design-Decisions">Design Decisions </a></li>
+    <li><a href="#Graphs">Graphs </a></li>
+    <li><a href="#Discussions">Discussions </a></li>
     <li><a href="#Group-Members-and-Contributions">Group Member and Contributions</a></li>
   </ol>
 </details>
@@ -110,7 +113,8 @@ This assignment project uses a local mysql database to store the following datab
 ### Graph 4 50:50 Read/Write Ratio Throughput Graph
 ### Graph 5 80:20 Read/Write Ratio Latency Graph
 ### Graph 6 80:20 Read/Write Ratio Throughput Graph
-### Discussions
+
+## Discussions
 
 ## Group Members and Contributions:
 - [mrchenliang](https://github.com/mrchenliang)

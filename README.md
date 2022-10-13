@@ -28,10 +28,19 @@ The backend service returns web pages and responds to api requests. The memcache
 ### Web Pages (Port 5000)
 - `/` directs to home page
 - `/image` directs to get image page
+![Get Image Hit](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get.jpeg)
+![Get Image Miss](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
+
 - `/upload_image` directs to put image page
+![Post Image](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
+
 - `/keys_list` directs to get keys list page
+![Get Keys List](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
 - `/cache_properties` directs to get cache properties page
+![Post Set Cache Properties](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
+![Post Clear Cache](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
 - `/cache_stats` directs to get cache stats page
+![Get Cache Stats](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
 
 ### Backend API Endpoints (Port 5000)
 - `/api/upload` post request to upload key and respective file image
@@ -58,7 +67,7 @@ This assignment project uses a local mysql database to store the following datab
 - Alternative: The alternative is to have 1 flask instance and have the memcache to run within the backend service, the downside of this is that it is a monolith architecture which is difficult with scaling as there are more opportunities to conflict and overwrite the services.
 - Reason: The reason why there are 2 independent flask instances is because they can be seen as individual services that a backend could potentially refactor out to be a microservice environment. In the future development, the 2 flask instances can be developed independently without interferring with each other and the 2 flask instances will communicate using HTTP requests.
 
-### Memcache Stats Graph Plotting
+### Synchronous vs Asynchronous Operations
 - Decision: 
 - Alternative: 
 - Reason:

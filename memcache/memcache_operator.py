@@ -235,8 +235,8 @@ def store_statistic_into_db():
     """
     # Get the statistics from memcache_stat
     time = datetime.now()
-    key_count = memcache_stat['key_count']
     size_count = memcache_stat['size_count']
+    key_count = memcache_stat['key_count']
     request_count = memcache_stat['request_count']
     miss_count = memcache_stat['miss_count']
     hit_count = memcache_stat['hit_count']

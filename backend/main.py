@@ -48,19 +48,30 @@ def get_image(image):
 def image():
     if request.method == 'POST':
         key_value = request.form.get('key_value')
-        # implement memcache (get request for image)
-        cnx = get_db()
-        cursor = cnx.cursor(buffered=True)
-        query = 'SELECT images.location FROM images where images.key = %s'
-        cursor.execute(query, (key_value,))
-        if cursor._rowcount:
-            location=str(cursor.fetchone()[0]) 
-            cnx.close()
-            base64_image = convert_image_base64(location)
-            # implement memcache (put request for image)
-            return render_template('image.html', exists=True, image=base64_image)
+        request_json = {
+            'key': key_value
+        }
+        # get the image by key from the memcache
+        res = requests.post(memcache_host + '/get_from_memcache', json=request_json)
+        if(res.text == None):
+            cnx = get_db()
+            cursor = cnx.cursor(buffered=True)
+            query = 'SELECT images.location FROM images where images.key = %s'
+            cursor.execute(query, (key_value,))
+            if cursor._rowcount:
+                location=str(cursor.fetchone()[0]) 
+                cnx.close()
+                base64_image = convert_image_base64(location)
+                request_json = { 
+                    key_value: base64_image 
+                }
+                # put the key and image into the memcache
+                res = requests.post(memcache_host + '/put_into_memcache', json=request_json)
+                return render_template('image.html', exists=True, image=base64_image)
+            else:
+                return render_template('image.html', exists=False, image='does not exist')
         else:
-            return render_template('image.html', exists=False, image='does not exist')
+            return render_template('image.html', exists=True, filename=res.text)
     return render_template('image.html')
 
 @webapp.route('/upload_image', methods = ['GET','POST'])
@@ -152,30 +163,45 @@ def list_keys():
 
 @webapp.route('/api/key/<string:key_value>', methods=['POST'])
 def key(key_value):
-    try:
-        # implement memcache (get request for image)
-        cnx = get_db()
-        cursor = cnx.cursor(buffered=True)
-        query = 'SELECT images.location FROM images where images.key = %s'
-        cursor.execute(query, (key_value,))
-        if cursor._rowcount:
-            location=str(cursor.fetchone()[0]) 
-            cnx.close()
-            base64_image = convert_image_base64(location)
-            # implement memcache (put request for image)
-            response = {
-                'success': 'true' , 
-                'content': base64_image
-            }
-            return jsonify(response)
+    try:        
+        request_json = {
+            'key': key_value
+        }
+        # get the image by key from the memcache
+        res = requests.post(memcache_host + '/get_from_memcache', json=request_json)
+        if(res.text == None):
+            cnx = get_db()
+            cursor = cnx.cursor(buffered=True)
+            query = 'SELECT images.location FROM images where images.key = %s'
+            cursor.execute(query, (key_value,))
+            if cursor._rowcount:
+                location=str(cursor.fetchone()[0]) 
+                cnx.close()
+                base64_image = convert_image_base64(location)
+                request_json = { 
+                    key_value: base64_image 
+                }
+                # put the key and image into the memcache
+                res = requests.post(memcache_host + '/put_into_memcache', json=request_json)
+                response = {
+                    'success': 'true' , 
+                    'content': base64_image
+                }
+                return jsonify(response)
+            else:
+                response = {
+                    'success': 'false', 
+                    'error': {
+                        'code': '406 Not Acceptable', 
+                        'message': 'The associated key does not exist'
+                        }
+                    }
+                return jsonify(response)
         else:
             response = {
-                'success': 'false', 
-                'error': {
-                    'code': '406 Not Acceptable', 
-                    'message': 'The associated key does not exist'
-                    }
-                }
+                'success': 'true' , 
+                'content': res.text
+            }   
             return jsonify(response)
     except Exception as e:
         error_response = {

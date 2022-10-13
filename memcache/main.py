@@ -41,6 +41,8 @@ def refresh_configuration():
 
 
 @webapp.route('/invalidate_specific_key', methods=['GET', 'POST'])
-def invalidate_key(key):
+def invalidate_key():
+    request_json = request.get_json(force=True)
+    key = request_json['key']
     flag = invalidate_specific_key(key)
     return response_builder(flag)

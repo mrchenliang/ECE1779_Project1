@@ -1,6 +1,7 @@
-import base64, os
+import base64, os, requests
 from backend import IMAGE_FOLDER
-from backend.constants import ALLOWED_EXTENSIONS
+from backend.constants import ALLOWED_EXTENSIONS, memcache_host
+
 from backend.database_helper import get_db
 
 def convert_image_base64(fp):
@@ -16,7 +17,11 @@ def process_image(request, key):
       if extension.lower() in ALLOWED_EXTENSIONS:
             filename = key + extension
             file.save(os.path.join(IMAGE_FOLDER, filename))
-            # implement memcache (post request for invalidate image)
+            request_json = {
+                "key": key
+            }
+            # post request to invalidate memcache by key
+            res = requests.post(memcache_host + '/invalidate_specific_key', json=request_json)
             return add_image_to_db(key, filename)
       return 'INVALID'
 
@@ -49,7 +54,11 @@ def add_image(request, key):
         if extension.lower() in ALLOWED_EXTENSIONS:
             filename = key + extension
             file.save(os.path.join(IMAGE_FOLDER, filename))
-            # implement memcache (post request for invalidate image)
+            request_json = {
+                "key": key
+            }
+            # post request to invalidate memcache by key
+            res = requests.post(memcache_host + '/invalidate_specific_key', json=request_json)
             return add_image_to_db(key, filename)
         return 'INVALID'
     except:

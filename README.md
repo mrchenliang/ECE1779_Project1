@@ -52,9 +52,9 @@ The backend service returns web pages and responds to api requests. The memcache
 ### Memcache API Endpoints (Port 5001)
 - `/clear_cache` clear memcache and items
 - `/refresh_configuration` refresh memcache configuration
-- `/put` put key and image into memcache
-- `/get` get key and image from memcache
-- `/invalidate` delete image and respective key from memcache
+- `/put_into_memcache` put key and image into memcache
+- `/get_from_memcache` get key and image from memcache
+- `/invalidate_specific_key` delete image and respective key from memcache
 
 ## Database
 This assignment project uses a local mysql database to store the following database. There are 3 different tables: 1 for the images, 1 for the cache properties, and 1 for cache stats.

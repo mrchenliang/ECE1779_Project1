@@ -5,6 +5,7 @@
 """
 
 import random
+from flask import g
 from datetime import datetime
 from sys import getsizeof
 
@@ -47,6 +48,7 @@ def lru_replacement():
                 memcache_stat['key_count'] -= 1
                 memcache_stat['size_count'] -= memcache[key]['size']
                 memcache.pop(key)
+            # chen's comment, why do we need else ?
             else:
                 continue
         return True
@@ -60,9 +62,9 @@ def replacement():
     Using this to determine which replacement policy we will take and execute it
     :return: bool
     """
-    if memcache_config['replace_policy'] == 'Random':
+    if memcache_config['replacement_policy'] == 'Random Replacement':
         return random_replacement()
-    else:
+    elif memcache_config['replacement_policy'] == 'Least Recently Used':
         return lru_replacement()
 
 
@@ -95,6 +97,12 @@ def connect_to_db():
         else:
             print(error)
 
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = connect_to_db()
+    return db
+
 
 def put_into_memcache(key, file):
     """
@@ -108,7 +116,7 @@ def put_into_memcache(key, file):
     image_size = (getsizeof(file) - 49) / 1024 / 1024
 
     # Check if the image size is larger than the memcache capacity
-    if image_size > memcache_config['capacity']:
+    if image_size > memcache_config['max_capacity']:
         print("The document you have uploaded is larger than the memcache capacity")
         return False
 
@@ -117,7 +125,7 @@ def put_into_memcache(key, file):
         existed_file_size = memcache[key]['size']
         memcache_stat['size_count'] -= existed_file_size
     # If the size will over the capacity after put, do the replacement
-    while image_size + memcache_stat['size_count'] > memcache_config['capacity']:
+    while image_size + memcache_stat['size_count'] > memcache_config['max_capacity']:
         if not bool(replacement()):
             print("The replacement process has ERROR, the memcache is EMPTY")
             return False
@@ -199,20 +207,21 @@ def refresh_config_of_memcache():
     :return: bool
     """
     # Connect to the database
-    cnx = connect_to_db()
+    cnx = get_db()
     cursor = cnx.cursor()
     # Execute the query
-    query = "SELECT * FROM cache_properties"
+    query = '''SELECT * FROM cache_properties WHERE id = (SELECT MAX(id) FROM cache_properties LIMIT 1)'''
     try:
         cursor.execute(query)
-        # Get the configuration
-        results = cursor.fetchall()
-        max_capacity = results[len(results)-1][1]
-        replacement_policy = results[len(results)-1][2]
-        # Update the memcache_config
-        memcache_config['capacity'] = max_capacity
-        memcache_config['replace_policy'] = replacement_policy
-        return True
+        if(cursor._rowcount):
+            # Get the configuration
+            cache_properties = cursor.fetchone()
+            max_capacity = cache_properties[1]
+            replacement_policy = cache_properties[2]
+            # Update the memcache_config
+            memcache_config['max_capacity'] = max_capacity
+            memcache_config['replacement_policy'] = replacement_policy
+            return True
     except:
         print("------Get configuration failed------")
         return False
@@ -232,7 +241,7 @@ def store_statistic_into_db():
     miss_count = memcache_stat['miss_count']
     hit_count = memcache_stat['hit_count']
     # Connect to the database
-    cnx = connect_to_db()
+    cnx = get_db()
     cursor = cnx.cursor()
     # Execute the query
     query = "INSERT INTO cache_stats (cache_size, key_count, request_count, hit_count, miss_count, created_at)" \

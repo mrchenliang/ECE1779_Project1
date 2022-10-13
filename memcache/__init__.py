@@ -32,8 +32,8 @@ memcache_stat['miss_rate'] = 0
 memcache_stat['hit_rate'] = 0
 
 # initialize the memcache_config
-memcache_config['capacity'] = 10
-memcache_config['replace_policy'] = 'Random'
+memcache_config['max_capacity'] = 10
+memcache_config['replacement_policy'] = 'Least Recently Used'
 
 scheduler = APScheduler()
 scheduler.init_app(webapp)

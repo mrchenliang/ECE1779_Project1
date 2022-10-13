@@ -81,7 +81,7 @@ def cache_properties():
         replacement_policy = cache_properties[2]
         created_at = cache_properties[3]
     else:
-        max_capacity = 2
+        max_capacity = 10
         replacement_policy = 'Least Recently Used'
         created_at = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     if request.method == 'POST':

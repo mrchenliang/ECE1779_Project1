@@ -1,22 +1,25 @@
 from flask import Flask, render_template, url_for, request, send_file, json, jsonify, g
 from memcache import webapp
 from memcache.response_helper import response_builder
-from backend.cache_helper import get_cache
-from memcache_operator import *
+from memcache.memcache_operator import *
 from memcache import scheduler
 
 
 @webapp.route('/put_into_memcache', methods=['GET', 'POST'])
-def put_memcache(key, file):
+def put_memcache():
+    request_json = request.get_json(force=True)
+    key, file = list(request_json.items())[0]
     flag = put_into_memcache(key, file)
     return response_builder(flag)
 
 
 @webapp.route('/get_from_memcache', methods=['GET', 'POST'])
-def get_memcache(key):
+def get_memcache():
+    request_json = request.get_json(force=True)
+    key = request_json['key']
     file = get_from_memcache(key)
     if file is None:
-        return "Miss"
+        return None
     else:
         return file
 

@@ -2,12 +2,13 @@
 <head>
   <title>Very simple memcache</title>
   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/keys_list.css') }}" />
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main.css') }}" />
 </head> 
 <html>
   <body>
-    <h3>Keys List</h3>
+    <h2>Keys List</h2>
     {% include "navbar.html" %}
-    <table>
+    <table id="keys">
       <div>Total Keys: {{ length }}</div>
       <tr>
         <th>Key </th>

@@ -206,9 +206,8 @@ def refresh_config_of_memcache():
         cursor.execute(query)
         # Get the configuration
         results = cursor.fetchall()
-        for result in results:
-            max_capacity = result[1]
-            replacement_policy = result[2]
+        max_capacity = results[len(results)-1][1]
+        replacement_policy = results[len(results)-1][2]
         # Update the memcache_config
         memcache_config['capacity'] = max_capacity
         memcache_config['replace_policy'] = replacement_policy

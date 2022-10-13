@@ -10,7 +10,6 @@
         <h2>Upload Image</h2>
         <form
             class="form-outline"
-            style="height: 260px"
             method="post"
             enctype=multipart/form-data
         >
@@ -19,10 +18,8 @@
             <br>
             <label>Upload Image:</label>
             <input type="file" name="file" id="file" accept="image/*"/>
-        <br>
-        <div>
+            <br>
             <input type="submit" id="submit">
-         </div>
          {% if status is defined %}
             <div class="status">
                 {% if status == "OK" %}

@@ -53,7 +53,7 @@ INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('cold', 'cold.jpeg')
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('flower', 'flower.jpeg');
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('kings', 'kings.png');
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('lakers', 'lakers.png');
-INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('flower', 'flower.png');
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('heat', 'heat.png');
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('spurs', 'spurs.png');
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('suns', 'suns.png');
 

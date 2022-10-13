@@ -14,20 +14,17 @@
             method="post"
             enctype=multipart/form-data
         >
-        <div>
             <label for="key">Insert Key:</label>
             <input type="text" id="key" name="key">
-        </div>
-        <div>
+            <br>
             <label>Upload Image:</label>
             <input type="file" name="file" id="file" accept="image/*"/>
-        </div>
         <br>
         <div>
             <input type="submit" id="submit">
          </div>
-        <div style="text-align: center;">
-            {% if status is defined %}
+         {% if status is defined %}
+            <div class="status">
                 {% if status == "OK" %}
                     <h4 style="color: green">Image Successfully Added</h4>
                 {% elif status == "FAILURE" %}
@@ -35,8 +32,8 @@
                 {% elif status == "INVALID" %}
                     <h4 style="color: rgb(172, 16, 16)">Image Type Not Supported</h4>
                 {% endif %}
-            {% endif %}
-        </div>
+            </div>
+        {% endif %}
     </form>
     <body>    
 </html>

@@ -2,40 +2,75 @@
     font-family: Arial, Helvetica, sans-serif;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f2f2f2;
+}
+
 .navbar {
-    font-family: Arial, Helvetica, sans-serif;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #282A35;
-    display: flex;
-    justify-content: space-between;
+  font-family: Arial, Helvetica, sans-serif;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  width: 100vw;
+  background-color: #282A35;
+  display: flex;
+  justify-content: space-between;
 }
 
 li {
-    float: left;
+  float: left;
 }
 
-
 li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 li a:hover:not(.active) {
-    background-color: #000000;
+  background-color: #000000;
 }
 
 li a.active {
-    background-color: #4CAF50;
+  background-color: #4CAF50;
+}
+
+form {
+  min-width: 780px;
+  width: 60vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+input[type=text] {
+  min-width: 250px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=file] {
+  min-width: 250px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 input[type=submit] {
-  width: 10%;
+  min-width: 250px;
   background-color: #4CAF50;
   color: white;
   padding: 14px 20px;
@@ -45,16 +80,19 @@ input[type=submit] {
   cursor: pointer;
 }
 
-input[type=text], select {
-  width: 15%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
 input[type=submit]:hover {
   background-color: #45a049;
+}
+
+.image-preview {
+  border-radius: 5px;
+  padding: 20px;
+  background-color: gray;
+}
+
+div.status {
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  text-align: center;
 }

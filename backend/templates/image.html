@@ -14,15 +14,13 @@
             <br>
             <input type="submit" value="Get Key" />
         </form>
-        <div>
-          {% if image is defined %}
-            {% if exists %}
-              <h4>Image:</h4>
-              <img src= "data:image/png;base64,{{ image }}" alt={{image}}  class="image-preview"/>
-            {% else %}
-              <h4>Please enter a valid key, the image you are looking for does not exist</h4>
-            {% endif %}
+        {% if image is defined %}
+          {% if exists %}
+            <h4>Image:</h4>
+            <img src= "data:image/png;base64,{{ image }}" alt={{image}}  class="image-preview"/>
+          {% else %}
+            <h4>Please enter a valid key, the image you are looking for does not exist</h4>
           {% endif %}
-        </div>
+        {% endif %}
     <body>    
 </html>

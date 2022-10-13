@@ -26,7 +26,7 @@ This assignment project has 2 independent flask instances
 The backend service returns web pages and responds to api requests. The memcache service is exposed to the public but is used as an internal service that the backend service calls to configure, add, update and reset the memcache. The memcache also updates the database periodically with the memcache data.
 
 ## Database
-This assignemnt project uses a local mysql database to store the following database. There are 3 different tables: 1 for the images, 1 for the cache properties, and 1 for cache stats.
+This assignment project uses a local mysql database to store the following database. There are 3 different tables: 1 for the images, 1 for the cache properties, and 1 for cache stats.
 
 ### Database Schema
 ![Database Schema](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)

@@ -7,8 +7,12 @@
 import random
 from datetime import datetime
 from sys import getsizeof
-from memcache import webapp, memcache, memcache_stat, memcache_config
 
+import mysql.connector
+from mysql.connector import errorcode
+
+from memcache import webapp, memcache, memcache_stat, memcache_config
+from backend import constants
 
 def random_replacement():
     """
@@ -74,6 +78,21 @@ def update_memcache_stat_of_statistics(existed):
     else:
         memcache_stat['miss_count'] += 1
         memcache_stat['miss_rate'] = memcache_stat['miss_count'] / memcache_stat['request_count']
+
+
+def connect_to_db():
+    try:
+        return mysql.connector.connect(user=constants.db_config['user'],
+                                       password=constants.db_config['password'],
+                                       host=constants.db_config['host'],
+                                       database=constants.db_config['database'])
+    except mysql.connector.Error as error:
+        if error.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("------Access Denied------")
+        elif error.errno == errorcode.ER_BAD_DB_ERROR:
+            print("------Database Error------")
+        else:
+            print(error)
 
 
 def put_into_memcache(key, file):
@@ -177,4 +196,5 @@ def refresh_config_of_memcache():
     including capacity in MB and replacement policy
     :return: bool
     """
+
 

@@ -28,19 +28,21 @@ The backend service returns web pages and responds to api requests. The memcache
 ### Web Pages (Port 5000)
 - `/` directs to home page
 - `/image` directs to get image page
-![Get Image Hit](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get.jpeg)
-![Get Image Miss](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
+![Get Image Hit](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20image%20hit%20%26%post%clear_cache.jpeg)
+![Get Image Miss](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20image%20miss.jpeg)
 
 - `/upload_image` directs to put image page
-![Post Image](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
+![Post Upload Image](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/post%20upload_image.jpeg)
 
 - `/keys_list` directs to get keys list page
-![Get Keys List](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
+![Get Keys List](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20keys_list%20%26%20get%20cache_stats.jpeg)
+
 - `/cache_properties` directs to get cache properties page
-![Post Set Cache Properties](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
-![Post Clear Cache](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
+![Post Set Cache Properties](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/post%20cache_properties.jpeg)
+![Post Clear Cache](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20image%20hit%20%26%post%clear_cache.jpeg)
+
 - `/cache_stats` directs to get cache stats page
-![Get Cache Stats](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
+![Get Cache Stats](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/get%20keys_list%20%26%20get%20cache_stats.jpeg)
 
 ### Backend API Endpoints (Port 5000)
 - `/api/upload` post request to upload key and respective file image

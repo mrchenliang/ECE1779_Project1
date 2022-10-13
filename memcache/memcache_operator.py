@@ -198,7 +198,6 @@ def store_statistic_into_db():
     :return: bool
     """
     # Get the statistics from memcache_stat
-    time = datetime.now()
     size_count = memcache_stat['size_count']
     key_count = memcache_stat['key_count']
     request_count = memcache_stat['request_count']
@@ -208,10 +207,10 @@ def store_statistic_into_db():
     cnx = get_db()
     cursor = cnx.cursor()
     # Execute the query
-    query = "INSERT INTO cache_stats (cache_size, key_count, request_count, hit_count, miss_count, created_at)" \
-            "VALUES (%s, %s, %s, %s, %s, %s)"
+    query = "INSERT INTO cache_stats (cache_size, key_count, request_count, hit_count, miss_count)" \
+            "VALUES (%s, %s, %s, %s, %s)"
     try:
-        cursor.execute(query, (size_count, key_count, request_count, hit_count, miss_count, time))
+        cursor.execute(query, (size_count, key_count, request_count, hit_count, miss_count))
         cursor.commit()
         print("------Memcache statistics store success------")
         return True

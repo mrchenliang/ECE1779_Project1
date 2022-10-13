@@ -29,7 +29,7 @@ The backend service returns web pages and responds to api requests. The memcache
 This assignment project uses a local mysql database to store the following database. There are 3 different tables: 1 for the images, 1 for the cache properties, and 1 for cache stats.
 
 ### Database Schema
-![Database Schema](../ECE1779_Project1/static/database_schema.jpeg)
+![Database Schema](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/database_schema.jpeg)
 
 ## Design Decisions
 

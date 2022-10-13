@@ -6,8 +6,7 @@ Assignment Group 2
 - [BrianQJN](https://github.com/BrianQJN)
 - [Heliali](https://github.com/Heliali)
 ### Contributions Graph
-<!-- Insert Graph Here -->
-
+The contribution graph can be found on the last page of the report
 ## Dependencies
 The assignment project requires the following libraries `Flask, gunicorn, mysql.connector, matplotlib.figure, flask_apscheduler`
 ### To Install
@@ -83,5 +82,5 @@ This assignment project uses a local mysql database to store the following datab
 ### Graph 6 80:20 Read/Write Ratio Throughput Graph
 ### Discussions
 
-
-
+### Contributions Graph
+![Contributions](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/contributions.png)

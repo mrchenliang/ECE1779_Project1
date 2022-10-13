@@ -86,10 +86,10 @@ def put_into_memcache(key, file):
     """
     # Check memcache remains some capacity for the new value
     # Converts the image size to MB
-    image_size = (getsizeof(file) - 49) / 1024 / 1024
+    image_size = (getsizeof(file) - 49) / 1024 / 1024 * 1000000
 
     # Check if the image size is larger than the memcache capacity
-    if image_size > memcache_config['max_capacity']:
+    if image_size > memcache_config['max_capacity'] * 1000000:
         print("The document you have uploaded is larger than the memcache capacity")
         return False
 
@@ -98,7 +98,7 @@ def put_into_memcache(key, file):
         existed_file_size = memcache[key]['size']
         memcache_stat['size_count'] -= existed_file_size
     # If the size will over the capacity after put, do the replacement
-    while image_size + memcache_stat['size_count'] > memcache_config['max_capacity']:
+    while image_size + memcache_stat['size_count'] > memcache_config['max_capacity']  * 1000000:
         if not bool(replacement()):
             print("The replacement process has ERROR, the memcache is EMPTY")
             return False

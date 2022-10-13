@@ -50,6 +50,7 @@ START TRANSACTION;
 USE `memcache`;
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('hot', 'hot.jpeg');
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('cold', 'cold.jpeg');
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('flower', 'flower.jpeg');
 
 COMMIT;
 

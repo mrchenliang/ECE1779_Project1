@@ -51,6 +51,11 @@ USE `memcache`;
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('hot', 'hot.jpeg');
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('cold', 'cold.jpeg');
 INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('flower', 'flower.jpeg');
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('kings', 'kings.png');
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('lakers', 'lakers.png');
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('flower', 'flower.png');
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('spurs', 'spurs.png');
+INSERT INTO `memcache`.`images` (`key`, `location`) VALUES ('suns', 'suns.png');
 
 COMMIT;
 
@@ -70,6 +75,6 @@ INSERT INTO `memcache`.`cache_stats` (`id`, `cache_size`, `key_count`, `request_
 
 COMMIT;
 
-DROP USER IF EXISTS 'admin'@'localhost';
-CREATE USER 'admin'@'localhost' IDENTIFIED BY 'ece1779';
-GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost';
+-- DROP USER IF EXISTS 'admin'@'localhost';
+-- CREATE USER 'admin'@'localhost' IDENTIFIED BY 'ece1779';
+-- GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost';

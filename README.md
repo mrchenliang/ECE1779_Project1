@@ -25,6 +25,26 @@ This assignment project has 2 independent flask instances
 
 The backend service returns web pages and responds to api requests. The memcache service is exposed to the public but is used as an internal service that the backend service calls to configure, add, update and reset the memcache. The memcache also updates the database periodically with the memcache data.
 
+### Web Pages (Port 5000)
+- `/` directs to home page
+- `/image` directs to get image page
+- `/upload_image` directs to put image page
+- `/keys_list` directs to get keys list page
+- `/cache_properties` directs to get cache properties page
+- `/cache_stats` directs to get cache stats page
+
+### Backend API Endpoints (Port 5000)
+- `/api/upload` post request to upload key and respective file image
+- `/api/list_keys` post request to retrieve a list of keys
+- `/api/key/<key_value>` post request to retrieve the fiile image of a respective key
+
+### Memcache API Endpoints (Port 5001)
+- `/clear_cache` clear memcache and items
+- `/refresh_configuration` refresh memcache configuration
+- `/put` put key and image into memcache
+- `/get` get key and image from memcache
+- `/invalidate` delete image and respective key from memcache
+
 ## Database
 This assignment project uses a local mysql database to store the following database. There are 3 different tables: 1 for the images, 1 for the cache properties, and 1 for cache stats.
 

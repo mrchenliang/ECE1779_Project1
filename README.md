@@ -13,25 +13,22 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
-    </li>
-    <li>
-      <a href="#Getting Started">Getting Started</a>
+      <a href="#Getting-Started">Getting Started</a>
       <ul>
         <li><a href="#Dependencies">Dependencies</a></li>
         <li><a href="#Installation">Installation</a></li>
-        <li><a href="#Source Database">Source Database</a></li>
-        <li><a href="#Setup and Run">Setup and Run</a></li>
+        <li><a href="#Source-Database">Source Database</a></li>
+        <li><a href="#Setup-and-Run">Setup and Run</a></li>
       </ul>
     </li>
-    <li><a href="#Project Architecture">Project Architecture</a></li>
+    <li><a href="#Project-Architecture">Project Architecture</a></li>
       <ul>
-        <li><a href="#Web Pages (Port 5000)">Web Pages</a></li>
-        <li><a href="#Backend API Endpoints (Port 5000)">Backend API Endpoints</a></li>
-        <li><a href="#Memcache API Endpoints (Port 5001)">Memcache API Endpoints</a></li>
+        <li><a href="#Web-Pages-(Port-5000)">Web Pages</a></li>
+        <li><a href="#Backend-API-Endpoints-(Port-5000)">Backend API Endpoints</a></li>
+        <li><a href="#Memcache-API-Endpoints-(Port-5001)">Memcache API Endpoints</a></li>
       </ul>
     <li><a href="#Database">Database </a></li>
-    <li><a href="#Group Members and Contributions">Group Member and Contributions</a></li>
+    <li><a href="#Group-Members-and-Contributions">Group Member and Contributions</a></li>
   </ol>
 </details>
 

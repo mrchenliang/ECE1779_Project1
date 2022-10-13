@@ -9,11 +9,12 @@
     padding: 0;
     overflow: hidden;
     background-color: #282A35;
+    display: flex;
+    justify-content: space-between;
 }
 
 li {
     float: left;
-    border-right:1px solid #bbb;
 }
 
 
@@ -57,4 +58,3 @@ input[type=text], select {
 input[type=submit]:hover {
   background-color: #45a049;
 }
-

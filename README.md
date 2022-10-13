@@ -98,9 +98,10 @@ This assignment project uses a local mysql database to store the following datab
 - Reason: The reason why there are 2 independent flask instances is because they can be seen as individual services that a backend could potentially refactor out to be a microservice environment. In the future development, the 2 flask instances can be developed independently without interferring with each other and the 2 flask instances will communicate using HTTP requests.
 
 ### Synchronous vs Asynchronous Operations
-- Decision: 
-- Alternative: 
-- Reason:
+- Decision: The decision was to go with synchronous operations to communicate between webpages, backend and memcache services. This ensures that every operation is completed before executing the next operation; all operations are executed in series.
+- Alternative: The alternative is to consider asynchronous operations to communicate between webpages, backend and memcache services, which could allow the process of requests in parallel.
+- Reason: Although, it can be faster to execute asynchronous operations due to the fact that it is in parallel, there is alot more infrastructure cost regarding maintain the order of requests. If asynchronous operations were implemented, and one request fails, then a request queue needs to handle the failed case; whether that is to retry the request again at a later time or revert the other changes made by another request in the same function to maintain proper data accuracy. In doing so, concurrency is also introduced where that can add to the complexity to know which is the latest update. In addition, the cost of implementing asynchronous would introduce multithreading which can be expensive if not properly managed through AWS. With the requirement of this assignment, simple get and put calls for images, it is sufficient to implement a simple synchonous operation to meet the specifications, and therefore synchronous operations was chosen.
+
 ## Graphs
 
 ### Graph 1 20:80 Read/Write Ratio Latency Graph

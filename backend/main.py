@@ -53,7 +53,7 @@ def image():
         }
         # get the image by key from the memcache
         res = requests.post(memcache_host + '/get_from_memcache', json=request_json)
-        if(res.text == None):
+        if(res.text == 'Key Not Found'):
             cnx = get_db()
             cursor = cnx.cursor(buffered=True)
             query = 'SELECT images.location FROM images where images.key = %s'
@@ -169,7 +169,7 @@ def key(key_value):
         }
         # get the image by key from the memcache
         res = requests.post(memcache_host + '/get_from_memcache', json=request_json)
-        if(res.text == None):
+        if(res.text == 'Key Not Found'):
             cnx = get_db()
             cursor = cnx.cursor(buffered=True)
             query = 'SELECT images.location FROM images where images.key = %s'

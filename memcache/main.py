@@ -18,8 +18,8 @@ def get_memcache():
     request_json = request.get_json(force=True)
     key = request_json['key']
     file = get_from_memcache(key)
-    if file is None:
-        return None
+    if file == None:
+        return 'Key Not Found'
     else:
         return file
 

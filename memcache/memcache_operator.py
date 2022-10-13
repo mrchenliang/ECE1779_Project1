@@ -9,11 +9,9 @@ from flask import g
 from datetime import datetime
 from sys import getsizeof
 
-import mysql.connector
-from mysql.connector import errorcode
-
 from memcache import webapp, memcache, memcache_stat, memcache_config
-from backend import constants
+from backend.cache_helper import get_cache
+from backend.database_helper import get_db
 
 
 def random_replacement():
@@ -48,9 +46,6 @@ def lru_replacement():
                 memcache_stat['key_count'] -= 1
                 memcache_stat['size_count'] -= memcache[key]['size']
                 memcache.pop(key)
-            # chen's comment, why do we need else ?
-            else:
-                continue
         return True
     else:
         print("ERROR!The memcache is EMPTY")
@@ -81,28 +76,6 @@ def update_memcache_stat_of_statistics(existed):
     else:
         memcache_stat['miss_count'] += 1
         memcache_stat['miss_rate'] = memcache_stat['miss_count'] / memcache_stat['request_count']
-
-
-def connect_to_db():
-    try:
-        return mysql.connector.connect(user=constants.db_config['user'],
-                                       password=constants.db_config['password'],
-                                       host=constants.db_config['host'],
-                                       database=constants.db_config['database'])
-    except mysql.connector.Error as error:
-        if error.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("------Access Denied------")
-        elif error.errno == errorcode.ER_BAD_DB_ERROR:
-            print("------Database Error------")
-        else:
-            print(error)
-
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = connect_to_db()
-    return db
-
 
 def put_into_memcache(key, file):
     """
@@ -206,26 +179,17 @@ def refresh_config_of_memcache():
     including capacity in MB and replacement policy
     :return: bool
     """
-    # Connect to the database
-    cnx = get_db()
-    cursor = cnx.cursor()
-    # Execute the query
-    query = '''SELECT * FROM cache_properties WHERE id = (SELECT MAX(id) FROM cache_properties LIMIT 1)'''
-    try:
-        cursor.execute(query)
-        if(cursor._rowcount):
-            # Get the configuration
-            cache_properties = cursor.fetchone()
-            max_capacity = cache_properties[1]
-            replacement_policy = cache_properties[2]
-            # Update the memcache_config
-            memcache_config['max_capacity'] = max_capacity
-            memcache_config['replacement_policy'] = replacement_policy
-            return True
-    except:
+    cache_properties = get_cache()
+    if not cache_properties == None:
+        max_capacity = cache_properties[1]
+        replacement_policy = cache_properties[2]
+        memcache_config['max_capacity'] = max_capacity
+        memcache_config['replacement_policy'] = replacement_policy
+        print("------Get configuration success------")
+        return True
+    else:
         print("------Get configuration failed------")
         return False
-
 
 def store_statistic_into_db():
     """

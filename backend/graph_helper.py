@@ -3,6 +3,7 @@ from io import BytesIO
 from matplotlib.figure import Figure
 
 def prepare_graph(rows):
+    # prepare data to be graphed by having 2 dictionaries, 1 for the x-axis, and 1 for the y-axis
     x_data = {'x-axis': [] }
     y_data = { 'miss_count': [], 'hit_count': [], 'request_count': [], 'cache_size': [], 'cache_count': []}
     for row in rows:
@@ -16,6 +17,7 @@ def prepare_graph(rows):
 
 
 def plot_graph(data_x_axis, data_y_axis, y_label):
+    # plot the graph using matlab and return the graph as a png
     fig = Figure(tight_layout=True)
     ax = fig.subplots()
     ax.plot(data_x_axis, data_y_axis)

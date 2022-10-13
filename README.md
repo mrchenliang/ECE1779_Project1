@@ -1,17 +1,50 @@
-# ECE1779_Project1
-Assignment Group 2
+<div id="top"></div>
+<h3 align="center">ECE1779 Project 1</h3>
+  <p align="center">
+    Introduction to Cloud Computing
+    <br />
+  </p>
+</div>
 
-## Group Members and Contributions:
-- [mrchenliang](https://github.com/mrchenliang)
-- [BrianQJN](https://github.com/BrianQJN)
-- [Heliali](https://github.com/Heliali)
-### Contributions Graph
-The contribution graph can be found on the last page of the report
-## Dependencies
-The assignment project requires the following libraries `Flask, gunicorn, mysql.connector, matplotlib.figure, flask_apscheduler`
-### To Install
+
+
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+    </li>
+    <li>
+      <a href="#Getting Started">Getting Started</a>
+      <ul>
+        <li><a href="#Dependencies">Dependencies</a></li>
+        <li><a href="#Installation">Installation</a></li>
+        <li><a href="#Source Database">Source Database</a></li>
+        <li><a href="#Setup and Run">Setup and Run</a></li>
+      </ul>
+    </li>
+    <li><a href="#Project Architecture">Project Architecture</a></li>
+      <ul>
+        <li><a href="#Web Pages (Port 5000)">Web Pages</a></li>
+        <li><a href="#Backend API Endpoints (Port 5000)">Backend API Endpoints</a></li>
+        <li><a href="#Memcache API Endpoints (Port 5001)">Memcache API Endpoints</a></li>
+      </ul>
+    <li><a href="#Database">Database </a></li>
+    <li><a href="#Group Members and Contributions">Group Member and Contributions</a></li>
+  </ol>
+</details>
+
+## Getting Started
+### Dependencies
+The assignment project requires the following libraries `Flask, gunicorn, requests, mysql.connector, matplotlib.figure`
+### Installation
+`git clone https://github.com/mrchenliang/ECE1779_Project1.git`
 `pip3 install -r requirements.txt`
-## Setup and Run
+### Source Database
+`mysql -u admin -p ece1779`
+`mysql> source database/memcache.sql`
+### Setup and Run
 ### To Start
 `sh start.sh`
 ### To Stop
@@ -22,7 +55,7 @@ This assignment project has 2 independent flask instances
 - 1 instance is for the backend service running on port 5000
 - 1 instance is for the memcache service running on port 5001
 
-The backend service returns web pages and responds to api requests. The memcache service is exposed to the public but is used as an internal service that the backend service calls to configure, add, update and reset the memcache. The memcache also updates the database periodically with the memcache data.
+The backend service returns web pages and responds to api requests. The memcache service is exposed to the public but is used as an internal service that the backend service calls to configure, add, update and reset the memcache. The memcache also updates the database periodically with the memcache data. The memcache stores the key and the image in base64 and can supports both Least Recently Used and Random Replacement methods.
 
 ### Web Pages (Port 5000)
 - `/` directs to home page
@@ -81,6 +114,11 @@ This assignment project uses a local mysql database to store the following datab
 ### Graph 5 80:20 Read/Write Ratio Latency Graph
 ### Graph 6 80:20 Read/Write Ratio Throughput Graph
 ### Discussions
+
+## Group Members and Contributions:
+- [mrchenliang](https://github.com/mrchenliang)
+- [BrianQJN](https://github.com/BrianQJN)
+- [Heliali](https://github.com/Heliali)
 
 ### Contributions Graph
 ![Contributions](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/contributions.png)

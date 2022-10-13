@@ -14,6 +14,7 @@ from mysql.connector import errorcode
 from memcache import webapp, memcache, memcache_stat, memcache_config
 from backend import constants
 
+
 def random_replacement():
     """
     Randomly selects a key and discards it to make space when necessary

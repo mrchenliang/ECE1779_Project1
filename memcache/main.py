@@ -2,7 +2,6 @@ from flask import Flask, render_template, url_for, request, send_file, json, jso
 from memcache import webapp
 from memcache.response_helper import response_builder
 from memcache.memcache_operator import *
-from memcache import scheduler
 
 
 @webapp.route('/put_into_memcache', methods=['GET', 'POST'])
@@ -35,8 +34,6 @@ def clear_cache():
 # refresh the memcache configuration
 def refresh_configuration():
     flag = refresh_config_of_memcache()
-    scheduler.add_job(id="update_memcache_statistics", func=store_statistic_into_db,
-                      trigger="interval", seconds=5)
     return response_builder(flag)
 
 

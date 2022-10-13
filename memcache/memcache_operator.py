@@ -191,30 +191,3 @@ def refresh_config_of_memcache():
         print("------Get configuration failed------")
         return False
 
-def store_statistic_into_db():
-    """
-    store statistics (number of items in cache, total size of items in cache,
-    number of requests served, miss rate and hit rate) to database for each 5s
-    :return: bool
-    """
-    # Get the statistics from memcache_stat
-    size_count = memcache_stat['size_count']
-    key_count = memcache_stat['key_count']
-    request_count = memcache_stat['request_count']
-    miss_count = memcache_stat['miss_count']
-    hit_count = memcache_stat['hit_count']
-    # Connect to the database
-    cnx = get_db()
-    cursor = cnx.cursor()
-    # Execute the query
-    query = "INSERT INTO cache_stats (cache_size, key_count, request_count, hit_count, miss_count)" \
-            "VALUES (%s, %s, %s, %s, %s)"
-    try:
-        cursor.execute(query, (size_count, key_count, request_count, hit_count, miss_count))
-        cursor.commit()
-        print("------Memcache statistics store success------")
-        return True
-    except:
-        print("------Memcache statistics store failed------")
-        return False
-

@@ -31,29 +31,29 @@
             Cache Replacement Policy:
             </label>
             {% if replacement_policy == "Least Recently Used" %}
-            <div>
+            <div class="replacement_options">
                 <input type="radio" name="replacement_policy" checked value="Least Recently Used">
                 <label for="lru">Least Recently Used</label>
             </div>
-            <div>
+            <div class="replacement_options">
                 <input type="radio" name="replacement_policy" value="Random Replacement">
                 <label for="random">Random Replacement</label>
             </div>
             {% elif replacement_policy == "Random Replacement" %}
-            <div>
+            <div class="replacement_options">
                 <input type="radio" name="replacement_policy" value="Least Recently Used">
                 <label for="lru">Least Recently Used</label>
             </div>
-            <div>
+            <div class="replacement_options">
                 <input type="radio" name="replacement_policy" checked value="Random Replacement">
                 <label for="random">Random Replacement</label>
             </div>
             {% else %}
-            <div>
+            <div class="replacement_options">
                 <input type="radio" name="replacement_policy" value="Least Recently Used">
                 <label for="lru">Least Recently Used</label>
             </div>
-            <div>
+            <div class="replacement_options">
                 <input type="radio" name="replacement_policy" value="Random Replacement">
                 <label for="random">Random Replacement</label>
             </div>

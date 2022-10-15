@@ -1,3 +1,4 @@
+/* define the font of the html*/
 *{
     font-family: Arial, Helvetica, sans-serif;
 }
@@ -10,8 +11,8 @@ body {
   background-color: #f2f2f2;
 }
 
+/* define the properties of the navbar*/
 .navbar {
-  font-family: Arial, Helvetica, sans-serif;
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -38,7 +39,7 @@ li a:hover:not(.active) {
   background-color: #000000;
 }
 
-li a.active {
+li a:active{
   background-color: #4CAF50;
 }
 
@@ -50,6 +51,7 @@ form {
   align-items: center;
 }
 
+/* define the properties of the input text box*/
 input[type=text] {
   min-width: 250px;
   padding: 12px 20px;
@@ -60,6 +62,7 @@ input[type=text] {
   box-sizing: border-box;
 }
 
+/* define the properties of the file upload button*/
 input[type=file] {
   min-width: 250px;
   padding: 12px 20px;
@@ -69,6 +72,7 @@ input[type=file] {
   box-sizing: border-box;
 }
 
+/* define the properties of the submit button*/
 input[type=submit] {
   min-width: 250px;
   background-color: #4CAF50;

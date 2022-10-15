@@ -15,12 +15,12 @@ body {
 .navbar {
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 16px;
   overflow: hidden;
   width: 100vw;
   background-color: #282A35;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 li {
@@ -33,13 +33,14 @@ li a {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+  border-radius: 5px;
 }
 
 li a:hover:not(.active) {
   background-color: #000000;
 }
 
-li a:active{
+li a:active {
   background-color: #4CAF50;
 }
 
@@ -99,4 +100,8 @@ div.status {
   background-color: #f2f2f2;
   padding: 20px;
   text-align: center;
+}
+
+.replacement_options {
+  margin-top: 8px;
 }

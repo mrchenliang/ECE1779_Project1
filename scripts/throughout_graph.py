@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import throughput
+
 
 def plot_graph(data_x_axis, data_y_axis):
     # plot the graph using matlab
@@ -16,4 +16,4 @@ def plot_graph(data_x_axis, data_y_axis):
     plt.xlim(0, 10)
 
     plt.legend()
-    plot.show()
+    plt.show()

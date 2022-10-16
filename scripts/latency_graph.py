@@ -52,10 +52,11 @@
 # loop.run_until_complete(main())
 # # print("Latency: ", time.time() - start_time)
 #
-
+import numpy as np
 import requests
 import threading
 import time
+import matplotlib.pyplot as plt
 
 
 def send_read_req(count):
@@ -97,10 +98,41 @@ def thread(count):
         t.join()
 
 
-latency = []
-for i in range(1, 21):
-    start_time = time.time()
-    thread(i)
-    latency.append(time.time()-start_time)
-    print("Time cost: ", time.time()-start_time)
+def plot_graph(data_x_axis, data_y_axis, type):
+    # plot the graph using matlab
 
+    plt.plot(data_x_axis, data_y_axis)
+
+    # set the graph title
+    plt.title("Cache Replacement Policy: Least Recently Used")
+
+    # set the x label and the y label of the graph
+    if type == 'l':
+        plt.ylabel("Latency(20:80 read/write ratio)")
+        plt.xlabel("Request_numbers")
+        plt.xlim(5, 101)
+        plt.xticks(np.arange(5, 100, 5))
+    else:
+        plt.ylabel("Throughput(20:80 read/write ratio)")
+        plt.xlabel("")
+
+    plt.legend()
+    plt.show()
+
+
+def cal_latency():
+    latency = []
+    data_x_axis = []
+    throughput = []
+    for i in range(1, 21):
+        start_time = time.time()
+        thread(i)
+        latency.append(time.time() - start_time)
+        print("Time cost: ", time.time() - start_time)
+        data_x_axis.append(5 * i)
+        # throughput.append(5 * i / (time.time() - start_time))
+    plot_graph(data_x_axis, latency, 'l')
+    # plot_graph(data_x_axis, throughput, 't')
+
+
+cal_latency()

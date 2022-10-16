@@ -34,7 +34,7 @@ def random_replacement():
 
 def lru_replacement():
     """
-    Randomly selects a key and discards it to make space when necessary
+    Selects the least used key and discards it to make space when necessary
     :return: bool
     """
     # Check if the memcache is empty

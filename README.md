@@ -102,6 +102,11 @@ This assignment project uses a local mysql database to store the following datab
 - Alternative: The alternative is to consider asynchronous operations to communicate between webpages, backend and memcache services, which could allow the process of requests in parallel.
 - Reason: Although, it can be faster to execute asynchronous operations due to the fact that it is in parallel, there is alot more infrastructure cost regarding maintain the order of requests. If asynchronous operations were implemented, and one request fails, then a request queue needs to handle the failed case; whether that is to retry the request again at a later time or revert the other changes made by another request in the same function to maintain proper data accuracy. In doing so, concurrency is also introduced where that can add to the complexity to know which is the latest update. In addition, the cost of implementing asynchronous would introduce multithreading which can be expensive if not properly managed through AWS. With the requirement of this assignment, simple get and put calls for images, it is sufficient to implement a simple synchonous operation to meet the specifications, and therefore synchronous operations was chosen.
 
+### How to implement LRU algorith
+- Decision: The decision was to implement LRU by using the timestamp as an attribute of the file we have stored in the memcache. And this makes more easier to get the most least recent used key in the memcache, and can reduce the process and space to store the LRU key in addtion.
+- Alternative: The alternative is to use another place in memcache to store the frequency that the keys in memcache be used.
+- Reason: Is's more easier to see what is the LRU key in memcache if we used the alternative. But if we use the alternative, the process would increase and the capacity that memcache needed will increase. But if we use timestamp to record the usage of the key, it would not only save the space in memcache, but also easier to check the status of the file in the memcache. So, we choose to implement LRU by using the timestamp as an attribute of the file.
+
 ## Graphs
 
 ### Graph 1 20:80 Read/Write Ratio Latency Graph

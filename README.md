@@ -124,4 +124,4 @@ This assignment project uses a local mysql database to store the following datab
 - [Heliali](https://github.com/Heliali)
 
 ### Contributions Graph
-![Contributions](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/contributions.png)
+![Contributions](https://github.com/mrchenliang/ECE1779_Project1/blob/main/static/contributions.png）

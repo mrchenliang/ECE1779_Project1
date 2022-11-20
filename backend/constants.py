@@ -4,5 +4,9 @@ db_config = {'user': 'admin',
              'database': 'memcache'}
 
 
-max_capacity = 2
+max_capacity = 10
 replacement_policy = 'Least Recently Used'
+
+ALLOWED_EXTENSIONS = {'.png', '.jpg', '.jpeg', '.gif'}
+
+memcache_host = "http://0.0.0.0:5001"

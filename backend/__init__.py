@@ -1,4 +1,5 @@
 from flask import Flask
+<<<<<<< HEAD
 from backend import main
 from flask_apscheduler import APScheduler
 
@@ -38,5 +39,14 @@ memcache_config['replace_policy'] = 'Random'
 scheduler = APScheduler()
 scheduler.init_app(webapp)
 scheduler.start()
+=======
+import os
 
+global IMAGE_FOLDER
 
+webapp = Flask(__name__)
+>>>>>>> 5ed6fd8385d8127d47066f01e406b626e01d29ce
+
+IMAGE_FOLDER = os.path.dirname(os.path.abspath(__file__)) + '/static/images'
+
+from backend import main
